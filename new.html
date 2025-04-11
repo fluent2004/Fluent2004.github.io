@@ -15,6 +15,7 @@
             --light: #f8f9fa;
             --card-bg: #1a1a2e;
             --text-muted: rgba(255, 255, 255, 0.7);
+            --success: #4BB543;
         }
         
         * {
@@ -251,6 +252,7 @@
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
         }
         
         .form-group {
@@ -281,6 +283,40 @@
             box-shadow: 0 0 0 3px rgba(110, 69, 226, 0.2);
         }
         
+        /* استایل زیبا برای select */
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            pointer-events: none;
+        }
+        
+        select.form-control {
+            appearance: none;
+            padding-left: 35px;
+            background-image: none;
+        }
+        
+        /* استایل گزینه‌های select */
+        select.form-control option {
+            background-color: var(--card-bg);
+            color: var(--light);
+            padding: 10px;
+        }
+        
+        select.form-control option:hover {
+            background-color: var(--primary);
+        }
+        
         textarea.form-control {
             min-height: 120px;
             resize: vertical;
@@ -300,11 +336,29 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
+            position: relative;
+            overflow: hidden;
         }
         
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(110, 69, 226, 0.6);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
         }
         
         .btn i {
@@ -337,6 +391,35 @@
                 font-size: 1.5rem;
             }
         }
+        
+        /* پیام موفقیت */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(75, 181, 67, 0.1);
+            border-radius: 15px;
+            border: 1px solid var(--success);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .success-message i {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -357,9 +440,11 @@
         <section class="section" id="about">
             <h3 class="section-title">درباره من</h3>
             <p class="timeline-description">
-                سلام! من محمدرضا مرادی نور هستم، دانشجوی کارشناسی مدیریت بیمه اکو در دانشگاه علامه طباطبایی و مشاور تخصصی در زمینه بیمه. با توجه به تحصیلات آکادمیک، علاقه و شغل من در حوزه بیمه، اینجا هستم که با ارائه مشاوره‌های تخصصی و طرح‌های بیمه‌ای مناسب، به شما کمک کنم بهترین پوشش‌های بیمه‌ای را با توجه به نیازهای خود انتخاب کنید.
-                <br><br>
-                خوشحال می‌شوم در این مسیر همراهتان باشم. برای دریافت مشاوره یا اطلاعات بیشتر، با من در تماس باشید!
+                                     سلام! 
+                        محمدرضا مرادی نور هستم، کارشناس و مشاور تخصصی در زمینه بیمه
+                        با توجه به تجربه های شغلی، دانش آکادمیک و علاقه شخصی ای که در حوزه انواع بیمه دارم، آماده‌م که با ارائه مشاوره های کارامد به شما کمک کنم تا بهترین طرح ها و پوشش های بیمه ای متناسب با نیازتون رو انتخاب کنید.
+                        باعث خوشحالیه که در این مسیر هم قدم و همراهتون باشم 
+                        برای دریافت اطلاعات بیشتر با من در تماس باشید !
             </p>
         </section>
         
@@ -429,11 +514,18 @@
                 برای دریافت مشاوره تخصصی در زمینه بیمه، طرح سوالات و درخواست استعلام قیمت، می‌توانید از طریق فرم زیر با من در ارتباط باشید. در اسرع وقت پاسخگوی شما خواهم بود.
             </p>
             
-            <form action="https://formsubmit.co/m.moradinur@gmail.com" method="POST" class="consultation-form" enctype="multipart/form-data">
+            <!-- پیام موفقیت -->
+            <div id="success-message" class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h3 style="color: var(--success); margin-bottom: 1rem;">درخواست شما با موفقیت ثبت شد!</h3>
+                <p>مشاوره شما دریافت شد و در اسرع وقت با شما تماس خواهیم گرفت.</p>
+                <p style="margin-top: 1rem; color: var(--secondary);">
+                    <i class="fas fa-phone"></i> برای ارتباط فوری: ۰۹۸۹۳۳۵۳۱۸۹۱۹
+                </p>
+            </div>
+            
+            <form id="consultation-form" class="consultation-form" enctype="multipart/form-data">
                 <input type="hidden" name="_subject" value="درخواست مشاوره جدید - محمدرضا مرادی نور">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://yourwebsite.com/thank-you.html">
                 
                 <div class="form-group">
                     <label for="name">نام و نام خانوادگی</label>
@@ -447,17 +539,19 @@
                 
                 <div class="form-group">
                     <label for="service">نوع خدمت مورد نیاز</label>
-                    <select id="service" name="service" class="form-control" required>
-                        <option value="" selected disabled>لطفا انتخاب کنید</option>
-                        <option value="مشاوره تلفنی">مشاوره تلفنی</option>
-                        <option value="مشاوره حضوری">مشاوره حضوری</option>
-                        <option value="استعلام قیمت">استعلام قیمت بیمه</option>
-                        <option value="سایر">سایر موارد</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select id="service" name="service" class="form-control" required>
+                            <option value="" selected disabled>لطفا انتخاب کنید</option>
+                            <option value="مشاوره تلفنی">مشاوره تلفنی</option>
+                            <option value="مشاوره حضوری">مشاوره حضوری</option>
+                            <option value="استعلام قیمت">استعلام قیمت بیمه</option>
+                            <option value="سایر">سایر موارد</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div class="form-group" id="insurance-type-group">
-                    <label for="insurance-type">نوع بیمه مورد نظر (در صورت نیاز)</label>
+                <div class="form-group" id="insurance-type-group" style="display: none;">
+                    <label for="insurance-type">نوع بیمه مورد نظر</label>
                     <input type="text" id="insurance-type" name="insurance-type" class="form-control" placeholder="مثال: بیمه شخص ثالث، بیمه بدنه، بیمه عمر">
                 </div>
                 
@@ -507,8 +601,6 @@
             const serviceSelect = document.getElementById('service');
             const insuranceTypeGroup = document.getElementById('insurance-type-group');
             
-            insuranceTypeGroup.style.display = 'none';
-            
             serviceSelect.addEventListener('change', function() {
                 if (this.value === 'استعلام قیمت') {
                     insuranceTypeGroup.style.display = 'block';
@@ -517,16 +609,38 @@
                 }
             });
             
-            // نمایش پیام پس از ارسال فرم (اگر صفحه thank-you.html را تنظیم نکرده‌اید)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('success')) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'با تشکر!',
-                    text: 'درخواست مشاوره شما با موفقیت ثبت شد. به زودی با شما تماس خواهیم گرفت.',
-                    confirmButtonText: 'متوجه شدم'
-                });
-            }
+            // مدیریت ارسال فرم
+            const form = document.getElementById('consultation-form');
+            const successMessage = document.getElementById('success-message');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                
+                // نمایش حالت لودینگ
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
+                submitBtn.disabled = true;
+                
+                // شبیه‌سازی ارسال فرم (در عمل باید به FormSubmit یا سرور دیگر ارسال شود)
+                setTimeout(() => {
+                    // مخفی کردن فرم و نمایش پیام موفقیت
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // بازگرداندن دکمه به حالت اولیه
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    // ریست فرم
+                    form.reset();
+                    insuranceTypeGroup.style.display = 'none';
+                    
+                    // اسکرول به پیام موفقیت
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            });
         });
     </script>
 </body>
