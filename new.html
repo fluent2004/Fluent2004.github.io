@@ -365,33 +365,6 @@
             margin-left: 8px;
         }
         
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .hero {
-                padding: 2rem 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.2rem;
-            }
-            
-            .section {
-                padding: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-        }
-        
         /* پیام موفقیت */
         .success-message {
             display: none;
@@ -420,6 +393,33 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -440,11 +440,9 @@
         <section class="section" id="about">
             <h3 class="section-title">درباره من</h3>
             <p class="timeline-description">
-                                     سلام! 
-                        محمدرضا مرادی نور هستم، کارشناس و مشاور تخصصی در زمینه بیمه
-                        با توجه به تجربه های شغلی، دانش آکادمیک و علاقه شخصی ای که در حوزه انواع بیمه دارم، آماده‌م که با ارائه مشاوره های کارامد به شما کمک کنم تا بهترین طرح ها و پوشش های بیمه ای متناسب با نیازتون رو انتخاب کنید.
-                        باعث خوشحالیه که در این مسیر هم قدم و همراهتون باشم 
-                        برای دریافت اطلاعات بیشتر با من در تماس باشید !
+                سلام! من محمدرضا مرادی نور هستم، دانشجوی کارشناسی مدیریت بیمه اکو در دانشگاه علامه طباطبایی و مشاور تخصصی در زمینه بیمه. با توجه به تحصیلات آکادمیک، علاقه و شغل من در حوزه بیمه، اینجا هستم که با ارائه مشاوره‌های تخصصی و طرح‌های بیمه‌ای مناسب، به شما کمک کنم بهترین پوشش‌های بیمه‌ای را با توجه به نیازهای خود انتخاب کنید.
+                <br><br>
+                خوشحال می‌شوم در این مسیر همراهتان باشم. برای دریافت مشاوره یا اطلاعات بیشتر، با من در تماس باشید!
             </p>
         </section>
         
@@ -520,16 +518,15 @@
                 <h3 style="color: var(--success); margin-bottom: 1rem;">درخواست شما با موفقیت ثبت شد!</h3>
                 <p>مشاوره شما دریافت شد و در اسرع وقت با شما تماس خواهیم گرفت.</p>
                 <p style="margin-top: 1rem; color: var(--secondary);">
-                    <i class="fas fa-phone"></i> برای ارتباط فوری: 09335318919
+                    <i class="fas fa-phone"></i> برای ارتباط فوری: ۰۹۸۹۳۳۵۳۱۸۹۱۹
                 </p>
             </div>
             
-           <form action="https://formsubmit.co/el/bawopu" method="POST" class="consultation-form" enctype="multipart/form-data">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
+            <!-- فرم اصلی -->
+            <form id="consultation-form" action="https://formsubmit.co/m.moradinur@gmail.com" method="POST" class="consultation-form" enctype="multipart/form-data">
                 <input type="hidden" name="_subject" value="درخواست مشاوره جدید - محمدرضا مرادی نور">
-                <input type="text" name="_honey" style="display:none">
-
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
                 
                 <div class="form-group">
                     <label for="name">نام و نام خانوادگی</label>
@@ -627,23 +624,37 @@
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
                 submitBtn.disabled = true;
                 
-                // شبیه‌سازی ارسال فرم (در عمل باید به FormSubmit یا سرور دیگر ارسال شود)
-                setTimeout(() => {
-                    // مخفی کردن فرم و نمایش پیام موفقیت
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
+                // ارسال فرم با Fetch API
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData
+                    });
                     
+                    if (response.ok) {
+                        // نمایش پیام موفقیت و مخفی کردن فرم
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        
+                        // اسکرول به پیام موفقیت
+                        successMessage.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        throw new Error('خطا در ارسال فرم');
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطا!',
+                        text: 'متاسفانه در ارسال فرم مشکلی پیش آمد. لطفاً دوباره تلاش کنید.',
+                        confirmButtonText: 'متوجه شدم'
+                    });
+                    console.error('Error:', error);
+                } finally {
                     // بازگرداندن دکمه به حالت اولیه
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
-                    
-                    // ریست فرم
-                    form.reset();
-                    insuranceTypeGroup.style.display = 'none';
-                    
-                    // اسکرول به پیام موفقیت
-                    successMessage.scrollIntoView({ behavior: 'smooth' });
-                }, 1500);
+                }
             });
         });
     </script>
