@@ -278,6 +278,78 @@
                 font-size: 1.5rem;
             }
         }
+
+
+
+                        /* استایل‌های فرم مشاوره */
+            .consultation-form {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: var(--secondary-color);
+            }
+            
+            .form-group input[type="text"],
+            .form-group input[type="tel"],
+            .form-group input[type="file"],
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+                border: 1px solid rgba(110, 69, 226, 0.5);
+                background-color: rgba(26, 26, 46, 0.7);
+                color: var(--text-color);
+                font-family: 'Vazirmatn', sans-serif;
+                transition: all 0.3s ease;
+            }
+            
+            .form-group input[type="text"]:focus,
+            .form-group input[type="tel"]:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(110, 69, 226, 0.2);
+            }
+            
+            .form-group textarea {
+                resize: vertical;
+                min-height: 120px;
+            }
+            
+            .form-group small {
+                display: block;
+                margin-top: 0.3rem;
+                font-size: 0.8rem;
+                color: rgba(255, 255, 255, 0.6);
+            }
+            
+            input::file-selector-button {
+                background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                padding: 0.5rem 1rem;
+                border: none;
+                border-radius: 5px;
+                margin-left: 0.5rem;
+                cursor: pointer;
+                font-family: 'Vazirmatn', sans-serif;
+                transition: all 0.3s ease;
+            }
+            
+            input::file-selector-button:hover {
+                opacity: 0.9;
+            }
+
     </style>
 </head>
 <body>
@@ -373,6 +445,67 @@
                 </div>
             </div>
         </section>
+
+        <section class="resume-section">
+    <h3 class="section-title">درخواست مشاوره</h3>
+    <p class="timeline-description" style="margin-bottom: 2rem;">
+        برای دریافت مشاوره تخصصی در زمینه بیمه، طرح سوالات و درخواست استعلام قیمت، می‌توانید از طریق فرم زیر با من در ارتباط باشید. در اسرع وقت پاسخگوی شما خواهم بود.
+    </p>
+    
+    <form id="consultation-form" class="consultation-form">
+        <div class="form-group">
+            <label for="name">نام و نام خانوادگی</label>
+            <input type="text" id="name" name="name" required placeholder="نام خود را وارد کنید">
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">شماره تماس</label>
+            <input type="tel" id="phone" name="phone" required placeholder="شماره تماس خود را وارد کنید">
+        </div>
+        
+        <div class="form-group">
+            <label for="service-type">نوع خدمت مورد نیاز</label>
+            <select id="service-type" name="service-type" required>
+                <option value="" disabled selected>لطفا انتخاب کنید</option>
+                <option value="phone-consultation">دریافت مشاوره تلفنی</option>
+                <option value="chat-consultation">دریافت مشاوره به صورت چت</option>
+                <option value="price-inquiry">درخواست استعلام قیمت بیمه</option>
+                <option value="other">سایر موارد</option>
+            </select>
+        </div>
+        
+        <div class="form-group" id="insurance-type-group" style="display: none;">
+            <label for="insurance-type">نوع بیمه‌نامه</label>
+            <input type="text" id="insurance-type" name="insurance-type" placeholder="مثال: بیمه شخص ثالث، بیمه بدنه، بیمه عمر و...">
+        </div>
+        
+        <div class="form-group" id="company-info-group" style="display: none;">
+            <label for="company-info">نام شرکت بیمه‌گر (در صورت وجود)</label>
+            <input type="text" id="company-info" name="company-info" placeholder="نام شرکت بیمه‌گر مد نظر">
+        </div>
+        
+        <div class="form-group" id="vehicle-docs-group" style="display: none;">
+            <label for="vehicle-docs">بارگذاری مدارک خودرو/موتورسیکلت</label>
+            <input type="file" id="vehicle-docs" name="vehicle-docs" accept="image/*,.pdf">
+            <small>می‌توانید تصویر بیمه‌نامه قبلی، کارت خودرو یا گواهینامه را آپلود کنید</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">توضیحات</label>
+            <textarea id="message" name="message" rows="5" placeholder="توضیحات، سوالات یا جزئیات درخواست خود را بنویسید..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="attachments">پیوست‌ها (اختیاری)</label>
+            <input type="file" id="attachments" name="attachments" multiple accept="image/*,.pdf,.doc,.docx">
+            <small>می‌توانید تصاویر یا فایل‌های مرتبط را پیوست کنید</small>
+        </div>
+        
+        <button type="submit" class="download-btn" style="width: 100%; margin-top: 1rem;">
+            <i class="fas fa-paper-plane"></i> ارسال درخواست
+        </button>
+        </form>
+        </section>
         
         <div style="text-align: center;">
             <a href="path/to/your/resume.pdf" class="download-btn" download>
@@ -381,7 +514,59 @@
         </div>
     </div>
 
+
+
+
+
     <script>
+
+
+        // اسکریپت مدیریت فرم مشاوره
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceTypeSelect = document.getElementById('service-type');
+            const insuranceTypeGroup = document.getElementById('insurance-type-group');
+            const companyInfoGroup = document.getElementById('company-info-group');
+            const vehicleDocsGroup = document.getElementById('vehicle-docs-group');
+            
+            serviceTypeSelect.addEventListener('change', function() {
+                // مخفی کردن همه گروه‌های اختیاری
+                insuranceTypeGroup.style.display = 'none';
+                companyInfoGroup.style.display = 'none';
+                vehicleDocsGroup.style.display = 'none';
+                
+                // نمایش گروه‌های مورد نیاز بر اساس انتخاب
+                if (this.value === 'price-inquiry') {
+                    insuranceTypeGroup.style.display = 'block';
+                    companyInfoGroup.style.display = 'block';
+                    vehicleDocsGroup.style.display = 'block';
+                    
+                    // ایجاد پیام راهنما
+                    const messageBox = document.getElementById('message');
+                    messageBox.placeholder = "لطفاً نوع بیمه‌نامه و اگر شرکت بیمه‌گر خاصی مد نظر دارید ذکر کنید. همچنین مدارک مربوطه مانند کارت خودرو را پیوست کنید.";
+                }
+            });
+            
+            // مدیریت ارسال فرم
+            const form = document.getElementById('consultation-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // در اینجا می‌توانید کد ارسال فرم به سرور یا ایمیل را اضافه کنید
+                alert('درخواست مشاوره شما با موفقیت ثبت شد. در اسرع وقت با شما تماس خواهم گرفت.');
+                form.reset();
+                
+                // مخفی کردن فیلدهای مرتبط بعد از ارسال
+                insuranceTypeGroup.style.display = 'none';
+                companyInfoGroup.style.display = 'none';
+                vehicleDocsGroup.style.display = 'none';
+            });
+        });
+
+
+
+
+
+
         // اسکریپت برای انیمیشن‌های هنگام اسکرول
         document.addEventListener('DOMContentLoaded', function() {
             const sections = document.querySelectorAll('.resume-section');
