@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experimental Design: A Modern Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --success: #20c997;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .floating-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .floating-circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            animation: float 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+        
+        .floating-circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+        
+        .floating-circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+        
+        .floating-circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+        
+        .floating-circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+        
+        .floating-circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+        
+        .floating-circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+        
+        .floating-circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+        
+        .floating-circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+        
+        .floating-circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+        
+        .floating-circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 40px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .card p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(74,107,255,0.2), rgba(255,107,107,0.2));
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .feature-box {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+            border-top: 5px solid var(--primary);
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-box i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .feature-box h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid var(--secondary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid white;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid white;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+        
+        .right::after {
+            left: -12px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            
+            .left::after, .right::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+        }
+        
+        /* Animation classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--dark) transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Button */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74,107,255,0.3);
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255,107,107,0.4);
+        }
+        
+        /* Diagram */
+        .diagram {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Accordion */
+        .accordion {
+            background-color: white;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            transition: 0.4s;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .accordion:after {
+            content: '\002B';
+            color: var(--primary);
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: all 0.3s;
+        }
+        
+        .active:after {
+            content: "\2212";
+            transform: rotate(0deg);
+        }
+        
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            margin-bottom: 10px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="floating-circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </div>
+        <div class="container">
+            <h1 class="animate__animated animate__fadeInDown">Experimental Design</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">Establishing causal relationships through systematic manipulation and control</p>
+        </div>
+    </header>
+    
+    <section class="container">
+        <div class="card animate-on-scroll">
+            <h2>What is Experimental Design?</h2>
+            <p>Experimental design refers to the framework of techniques and procedures used to <span class="highlight">establish causal relationships</span> between variables. It involves the deliberate manipulation of one variable (independent variable) to observe its effect on another variable (dependent variable) while controlling for extraneous factors.</p>
+            
+            <div class="diagram animate-on-scroll">
+                <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="100" width="120" height="80" fill="#4a6bff" rx="10" ry="10" />
+                    <text x="110" y="145" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Independent</text>
+                    <text x="110" y="165" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Variable</text>
+                    
+                    <path d="M170 140 L 230 140" stroke="#ff6b6b" stroke-width="3" marker-end="url(#arrowhead)" />
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#ff6b6b" />
+                        </marker>
+                    </defs>
+                    
+                    <rect x="230" y="100" width="120" height="80" fill="#20c997" rx="10" ry="10" />
+                    <text x="290" y="145" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Dependent</text>
+                    <text x="290" y="165" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Variable</text>
+                    
+                    <rect x="140" y="200" width="120" height="80" fill="#6c757d" rx="10" ry="10" opacity="0.7" />
+                    <text x="200" y="235" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Control</text>
+                    <text x="200" y="255" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Variables</text>
+                    
+                    <path d="M200 180 L 200 200" stroke="#6c757d" stroke-width="2" stroke-dasharray="5,5" />
+                </svg>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="feature-box animate-on-scroll">
+                <i class="fas fa-random"></i>
+                <h3>Random Assignment</h3>
+                <p>Participants are randomly assigned to groups to ensure equivalent groups and control for confounding variables.</p>
+            </div>
+            
+            <div class="feature-box animate-on-scroll">
+                <i class="fas fa-sliders-h"></i>
+                <h3>Manipulation</h3>
+                <p>Researcher actively manipulates the independent variable to observe its effect on the dependent variable.</p>
+            </div>
+            
+            <div class="feature-box animate-on-scroll">
+                <i class="fas fa-filter"></i>
+                <h3>Control</h3>
+                <p>All other variables are held constant or accounted for to isolate the effect of the independent variable.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="card animate-on-scroll">
+            <h2>Key Components</h2>
+            
+            <button class="accordion">Independent Variable (IV)</button>
+            <div class="panel">
+                <p>The variable that is manipulated or changed by the researcher. It is the presumed cause in the cause-and-effect relationship.</p>
+                <p><strong>Example:</strong> In a study on sleep and memory, the amount of sleep (4 hours vs. 8 hours) would be the IV.</p>
+            </div>
+            
+            <button class="accordion">Dependent Variable (DV)</button>
+            <div class="panel">
+                <p>The outcome variable that is measured. It is the presumed effect in the cause-and-effect relationship.</p>
+                <p><strong>Example:</strong> In the sleep study, memory test scores would be the DV.</p>
+            </div>
+            
+            <button class="accordion">Control Variables</button>
+            <div class="panel">
+                <p>Variables that are held constant to prevent them from influencing the outcome.</p>
+                <p><strong>Example:</strong> Keeping the testing environment, time of day, and test materials the same for all participants.</p>
+            </div>
+            
+            <button class="accordion">Random Assignment</button>
+            <div class="panel">
+                <p>Participants are randomly assigned to experimental conditions to ensure groups are equivalent at the start of the study.</p>
+                <p><strong>Purpose:</strong> Helps eliminate selection bias and distributes confounding variables equally across groups.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="card animate-on-scroll">
+            <h2>Types of Experimental Designs</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Design Type</th>
+                        <th>Description</th>
+                        <th>Strengths</th>
+                        <th>Weaknesses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pre-experimental</strong></td>
+                        <td>Lacks random assignment and/or control group</td>
+                        <td>Simple, easy to conduct</td>
+                        <td>Low internal validity, can't establish causality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quasi-experimental</strong></td>
+                        <td>No random assignment but has control/comparison group</td>
+                        <td>More feasible in real-world settings</td>
+                        <td>Potential selection bias, less internal validity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>True Experimental</strong></td>
+                        <td>Random assignment to experimental and control groups</td>
+                        <td>High internal validity, can establish causality</td>
+                        <td>May lack external validity, can be impractical</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Single-Subject</strong></td>
+                        <td>Focuses on individual participants with repeated measures</td>
+                        <td>Good for clinical settings, shows individual patterns</td>
+                        <td>Limited generalizability, time-consuming</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="card animate-on-scroll">
+            <h2>The Experimental Process</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>1. Formulate Hypothesis</h3>
+                        <p>Develop a clear, testable statement about the expected relationship between variables.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2. Select Participants</h3>
+                        <p>Identify and recruit appropriate participants for the study.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>3. Random Assignment</h3>
+                        <p>Randomly assign participants to experimental and control groups.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>4. Implement IV</h3>
+                        <p>Administer the experimental treatment or condition to the experimental group.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>5. Measure DV</h3>
+                        <p>Collect data on the outcome variable for all groups.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>6. Analyze Data</h3>
+                        <p>Use statistical methods to determine if differences between groups are significant.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>7. Draw Conclusions</h3>
+                        <p>Interpret results in relation to the original hypothesis and existing literature.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="card animate-on-scroll">
+            <h2>Why Use Experimental Design?</h2>
+            <p>Experimental design is the gold standard for establishing cause-and-effect relationships because:</p>
+            
+            <div class="grid">
+                <div class="feature-box">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Causal Inference</h3>
+                    <p>Only experimental designs can truly demonstrate that changes in the IV cause changes in the DV.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Control</h3>
+                    <p>Allows researchers to rule out alternative explanations for observed effects.</p>
+                </div>
+                
+                <div class="feature-box">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Replicability</h3>
+                    <p>Clear procedures make it easier for other researchers to replicate the study.</p>
+                </div>
+            </div>
+            
+            <button class="btn" id="exampleBtn">Show Research Example</button>
+            <div id="researchExample" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3>Example: The Mozart Effect</h3>
+                <p>Researchers wanted to test if listening to Mozart improved spatial reasoning skills.</p>
+                <p><strong>IV:</strong> Music condition (Mozart vs. silence vs. relaxation instructions)</p>
+                <p><strong>DV:</strong> Scores on spatial reasoning test</p>
+                <p><strong>Design:</strong> True experimental with random assignment to conditions</p>
+                <p><strong>Result:</strong> The Mozart group showed significantly better spatial reasoning scores, suggesting a temporary enhancement effect.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <h3>Experimental Design</h3>
+            <p>The foundation of scientific research methodology</p>
+            <p>&copy; 2023 Research Methods Presentation</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Accordion functionality
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+        
+        // Show research example
+        document.getElementById('exampleBtn').addEventListener('click', function() {
+            const example = document.getElementById('researchExample');
+            if (example.style.display === 'none') {
+                example.style.display = 'block';
+                this.textContent = 'Hide Research Example';
+            } else {
+                example.style.display = 'none';
+                this.textContent = 'Show Research Example';
+            }
+        });
+        
+        // Animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+            observer.observe(el);
+        });
+        
+        // Floating circles animation
+        document.addEventListener('mousemove', function(e) {
+            const circles = document.querySelectorAll('.floating-circles li');
+            circles.forEach(circle => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                circle.style.transform = `translate(-${x * 50}px, -${y * 50}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
