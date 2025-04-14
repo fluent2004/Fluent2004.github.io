@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقشه پراکندگی جمعیت در ایران</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .map-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        #map {
+            flex: 2;
+            min-width: 600px;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .person-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .person-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .person-item:last-child {
+            border-bottom: none;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 4px;
+        }
+        .province {
+            stroke: #fff;
+            stroke-width: 0.5px;
+        }
+        .province:hover {
+            opacity: 0.8;
+        }
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 4px;
+            pointer-events: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>نقشه پراکندگی جمعیت در ایران</h1>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <div class="controls">
+                <div class="form-group">
+                    <label for="province">استان:</label>
+                    <select id="province">
+                        <option value="آذربایجان شرقی">آذربایجان شرقی</option>
+                        <option value="آذربایجان غربی">آذربایجان غربی</option>
+                        <option value="اردبیل">اردبیل</option>
+                        <option value="اصفهان">اصفهان</option>
+                        <option value="البرز">البرز</option>
+                        <option value="ایلام">ایلام</option>
+                        <option value="بوشهر">بوشهر</option>
+                        <option value="تهران">تهران</option>
+                        <option value="چهارمحال و بختیاری">چهارمحال و بختیاری</option>
+                        <option value="خراسان جنوبی">خراسان جنوبی</option>
+                        <option value="خراسان رضوی">خراسان رضوی</option>
+                        <option value="خراسان شمالی">خراسان شمالی</option>
+                        <option value="خوزستان">خوزستان</option>
+                        <option value="زنجان">زنجان</option>
+                        <option value="سمنان">سمنان</option>
+                        <option value="سیستان و بلوچستان">سیستان و بلوچستان</option>
+                        <option value="فارس">فارس</option>
+                        <option value="قزوین">قزوین</option>
+                        <option value="قم">قم</option>
+                        <option value="کردستان">کردستان</option>
+                        <option value="کرمان">کرمان</option>
+                        <option value="کرمانشاه">کرمانشاه</option>
+                        <option value="کهگیلویه و بویراحمد">کهگیلویه و بویراحمد</option>
+                        <option value="گلستان">گلستان</option>
+                        <option value="گیلان">گیلان</option>
+                        <option value="لرستان">لرستان</option>
+                        <option value="مازندران">مازندران</option>
+                        <option value="مرکزی">مرکزی</option>
+                        <option value="هرمزگان">هرمزگان</option>
+                        <option value="همدان">همدان</option>
+                        <option value="یزد">یزد</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">نام فرد:</label>
+                    <input type="text" id="name" placeholder="نام فرد را وارد کنید">
+                </div>
+                
+                <button id="add-btn">افزودن به لیست</button>
+                
+                <div class="stats">
+                    <h3>آمار:</h3>
+                    <p id="total-count">تعداد کل افراد: 0</p>
+                    <p id="top-province">پر جمعیت‌ترین استان: -</p>
+                </div>
+                
+                <div class="person-list" id="person-list">
+                    <p style="text-align: center; color: #777;">لیست افراد خالی است</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // داده‌های اولیه
+        const people = [];
+        const provinceCounts = {};
+        
+        // تنظیمات نقشه
+        const width = 600;
+        const height = 600;
+        const svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const projection = d3.geoMercator()
+            .center([54, 32])
+            .scale(1000)
+            .translate([width / 2, height / 2]);
+            
+        const path = d3.geoPath().projection(projection);
+        
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+        
+        // بارگذاری نقشه ایران
+        d3.json("https://raw.githubusercontent.com/deldersveld/topojson/master/countries/iran/iran-provinces.json").then(function(iran) {
+            const provinces = topojson.feature(iran, iran.objects.IRN_adm1).features;
+            
+            // رسم استان‌ها
+            svg.selectAll(".province")
+                .data(provinces)
+                .enter()
+                .append("path")
+                .attr("class", "province")
+                .attr("d", path)
+                .attr("id", d => "province-" + d.properties.ID_1)
+                .attr("fill", "#ccc")
+                .on("mouseover", function(event, d) {
+                    const count = provinceCounts[d.properties.NAME_1] || 0;
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`<strong>${d.properties.NAME_1}</strong><br/>تعداد افراد: ${count}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+            
+            // ذخیره اطلاعات استان‌ها برای استفاده بعدی
+            window.provincesData = provinces;
+            
+            // به‌روزرسانی رنگ‌ها بر اساس تعداد افراد
+            updateMapColors();
+        });
+        
+        // افزودن فرد به لیست
+        document.getElementById("add-btn").addEventListener("click", function() {
+            const province = document.getElementById("province").value;
+            const name = document.getElementById("name").value.trim();
+            
+            if (!name) {
+                alert("لطفاً نام فرد را وارد کنید");
+                return;
+            }
+            
+            // افزودن به لیست افراد
+            people.push({ name, province });
+            
+            // به‌روزرسانی شمارش استان‌ها
+            provinceCounts[province] = (provinceCounts[province] || 0) + 1;
+            
+            // به‌روزرسانی نمایش
+            updatePersonList();
+            updateStats();
+            updateMapColors();
+            
+            // پاک کردن فیلد نام
+            document.getElementById("name").value = "";
+        });
+        
+        // به‌روزرسانی لیست افراد
+        function updatePersonList() {
+            const listElement = document.getElementById("person-list");
+            
+            if (people.length === 0) {
+                listElement.innerHTML = '<p style="text-align: center; color: #777;">لیست افراد خالی است</p>';
+                return;
+            }
+            
+            listElement.innerHTML = '';
+            people.forEach(person => {
+                const item = document.createElement("div");
+                item.className = "person-item";
+                item.innerHTML = `<span>${person.name}</span><span>${person.province}</span>`;
+                listElement.appendChild(item);
+            });
+        }
+        
+        // به‌روزرسانی آمار
+        function updateStats() {
+            document.getElementById("total-count").textContent = `تعداد کل افراد: ${people.length}`;
+            
+            if (people.length > 0) {
+                let topProvince = "";
+                let maxCount = 0;
+                
+                for (const [province, count] of Object.entries(provinceCounts)) {
+                    if (count > maxCount) {
+                        maxCount = count;
+                        topProvince = province;
+                    }
+                }
+                
+                document.getElementById("top-province").textContent = `پر جمعیت‌ترین استان: ${topProvince} (${maxCount} نفر)`;
+            } else {
+                document.getElementById("top-province").textContent = "پر جمعیت‌ترین استان: -";
+            }
+        }
+        
+        // به‌روزرسانی رنگ‌های نقشه بر اساس تعداد افراد
+        function updateMapColors() {
+            if (!window.provincesData) return;
+            
+            // پیدا کردن حداکثر تعداد برای نرمال‌سازی
+            const maxCount = Math.max(...Object.values(provinceCounts), 1);
+            
+            // به‌روزرسانی رنگ هر استان
+            window.provincesData.forEach(province => {
+                const count = provinceCounts[province.properties.NAME_1] || 0;
+                const colorIntensity = count / maxCount;
+                
+                let color;
+                if (count === 0) {
+                    color = "#ccc"; // رنگ پیش‌فرض برای استان‌های بدون فرد
+                } else {
+                    // طیف رنگ از زرد به قرمز
+                    const red = Math.floor(150 + 105 * colorIntensity);
+                    const green = Math.floor(150 * (1 - colorIntensity));
+                    const blue = Math.floor(50 * (1 - colorIntensity));
+                    color = `rgb(${red}, ${green}, ${blue})`;
+                }
+                
+                d3.select(`#province-${province.properties.ID_1}`)
+                    .attr("fill", color);
+            });
+        }
+    </script>
+</body>
+</html>
