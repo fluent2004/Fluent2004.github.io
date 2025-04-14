@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیشنهادات بهبود فرآیندهای سازمان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Iranian+Sans&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #0f3460;
+            --accent-color: #e94560;
+            --light-color: #16213e;
+            --dark-color: #0d0d1a;
+            --success-color: #00b894;
+            --neon-blue: #00f5ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #9d00ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Iranian Sans', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-color);
+            color: #f1f1f1;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--neon-blue);
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, 
+                    transparent 20%, 
+                    rgba(0, 245, 255, 0.1) 50%, 
+                    transparent 80%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg>');
+            background-size: 200% 100%, 50px 50px;
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { background-position: -100% 0, 0 0; }
+            100% { background-position: 200% 0, 0 0; }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            animation: fadeInDown 1s ease;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeIn 1.5s ease;
+            color: var(--neon-blue);
+        }
+        
+        .sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .section {
+            background: var(--light-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
+        
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--neon-purple), var(--neon-blue));
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 5px rgba(0, 245, 255, 0.3);
+        }
+        
+        .section-title i {
+            margin-left: 10px;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+        
+        .item {
+            margin-bottom: 15px;
+            padding-right: 20px;
+            position: relative;
+            animation: fadeInRight 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .item::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--neon-blue);
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .priority {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+        }
+        
+        .high { 
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+        }
+        .medium { 
+            background-color: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.7);
+        }
+        .low { 
+            background-color: var(--success-color);
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.7);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: 50px;
+            border-top: 3px solid var(--neon-purple);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                    transparent 20%, 
+                    rgba(157, 0, 255, 0.1) 50%, 
+                    transparent 80%);
+            animation: shine 3s infinite reverse;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+        
+        .date {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Delays for items */
+        .item:nth-child(1) { animation-delay: 0.2s; }
+        .item:nth-child(2) { animation-delay: 0.4s; }
+        .item:nth-child(3) { animation-delay: 0.6s; }
+        .item:nth-child(4) { animation-delay: 0.8s; }
+        .item:nth-child(5) { animation-delay: 1s; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sections-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Special effects */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 245, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0); }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(15, 52, 96, 0.8));
+            border-right: 4px solid var(--neon-blue);
+            padding: 25px;
+            border-radius: 10px 0 0 10px;
+            margin: 40px 0;
+            animation: fadeIn 1s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(0, 245, 255, 0.3);
+        }
+        
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--neon-blue), transparent);
+            animation: shineVertical 3s infinite;
+        }
+        
+        @keyframes shineVertical {
+            0% { opacity: 0; top: -100%; }
+            20% { opacity: 1; }
+            100% { opacity: 0; top: 100%; }
+        }
+        
+        .highlight-title {
+            font-size: 1.3rem;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 5px rgba(0, 245, 255, 0.3);
+        }
+        
+        .highlight-title i {
+            margin-left: 10px;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+        
+        /* Neon borders for sections */
+        .neon-border {
+            position: relative;
+        }
+        
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: neonGlow 2s infinite alternate;
+        }
+        
+        @keyframes neonGlow {
+            from {
+                opacity: 0.7;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Glowing dots */
+        .glowing-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: float 5s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Glowing dots in background -->
+    <div class="glowing-dot" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="glowing-dot" style="top: 70%; left: 80%; animation-delay: 1s; width: 8px; height: 8px;"></div>
+    <div class="glowing-dot" style="top: 40%; left: 50%; animation-delay: 2s; background: var(--neon-purple);"></div>
+    <div class="glowing-dot" style="top: 80%; left: 20%; animation-delay: 3s; width: 6px; height: 6px;"></div>
+    
+    <header class="floating neon-border">
+        <div class="container">
+            <h1>پیشنهادات بهبود فرآیندهای سازمان</h1>
+            <p class="subtitle">بهینه‌سازی فرآیندهای جذب، نگهداشت نیروها و قراردادها</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="highlight-box pulse neon-border">
+            <h3 class="highlight-title"><i class="fas fa-lightbulb"></i>چکیده پیشنهادات</h3>
+            <p>این ارائه شامل پیشنهادات کلیدی در سه حوزه اصلی جذب نیرو، نگهداشت نیروهای موجود و بهبود فرآیندهای قرارداد می‌باشد. همچنین راهکارهایی برای کاهش خطاهای سیستم پیشنهاد شده است.</p>
+        </div>
+        
+        <div class="sections-container">
+            <section class="section neon-border">
+                <h2 class="section-title"><i class="fas fa-user-plus"></i>پیشنهادات جذب نیرو</h2>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    محدوده سنی را کوچک‌تر کنیم (بین 18 تا 35 سال)
+                </div>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    پراکندگی جمعیت داشته باشیم که برقشان قطع نشود و نصف نیروهایمان از دست نروند
+                </div>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    بررسی سطح مهارت کامپیوتری افراد به روشی استاندارد
+                </div>
+            </section>
+            
+            <section class="section neon-border">
+                <h2 class="section-title"><i class="fas fa-users"></i>پیشنهادات نگهداشت نیروها</h2>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    افزایش حقوق‌ها بر اساس سطح بندی عملکرد (مانند سیستم امتیازدهی اسنپ و تپسی)
+                </div>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    ایجاد سیستم ارزیابی برای ارتباط بهتر بین فریلنسرها و سرپرست‌ها
+                </div>
+                
+                <div class="item">
+                    <span class="priority low">کم</span>
+                    تفکیک بنوس‌ها بر اساس شرایط هر لاین و شرکت بیمه
+                </div>
+            </section>
+            
+            <section class="section neon-border">
+                <h2 class="section-title"><i class="fas fa-file-contract"></i>پیشنهادات قراردادها</h2>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    تغییر فرمت قرارداد برای تنظیم خودکار با نرم‌افزار
+                </div>
+                
+                <div class="item">
+                    <span class="priority low">کم</span>
+                    ارسال گروهی قراردادها (مثلاً برای گروه‌های خاص مانند خانم‌های یاری)
+                </div>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    ایجاد لیست استاندارد از اطلاعات فریلنسرها در یک شیت
+                </div>
+            </section>
+        </div>
+        
+        <div class="highlight-box neon-border">
+            <h3 class="highlight-title"><i class="fas fa-exclamation-triangle"></i>پیشنهاد برای کاهش خطاها</h3>
+            <p>قبل از بسته شدن سفارش، یک بار با مشخصاتی که کاربر برای صدور ماشین وارد کرده، از سامانه استعلام گرفته شود. در صورت مغایرت مشخصات یا نبود بیمه‌نامه معتبر، یا اجازه بسته شدن سفارش داده نشود یا به طور خودکار تگ به "بررسی قبل از صدور" تغییر کند.</p>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="highlight-box neon-border" style="margin-top: 50px;">
+            <h3 class="highlight-title"><i class="fas fa-project-diagram"></i>راهکارهای اجرایی</h3>
+            
+            <div style="position: relative; margin-top: 30px; padding-right: 30px;">
+                <!-- Timeline Line -->
+                <div style="position: absolute; right: 10px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--neon-purple), var(--neon-blue)); border-radius: 3px;"></div>
+                
+                <!-- Timeline Items -->
+                <div style="position: relative; margin-bottom: 30px; padding-bottom: 20px;">
+                    <div style="position: absolute; right: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); transform: translateX(50%);"></div>
+                    <div style="padding-right: 40px;">
+                        <h4 style="color: var(--neon-blue); margin-bottom: 10px;">فاز اول - بهینه‌سازی جذب</h4>
+                        <ul style="list-style-type: none;">
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="fas fa-check-circle" style="color: var(--success-color); position: absolute; right: 0; top: 5px;"></i>
+                                طراحی فرم ارزیابی مهارت‌های کامپیوتری
+                            </li>
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="fas fa-check-circle" style="color: var(--success-color); position: absolute; right: 0; top: 5px;"></i>
+                                تعیین محدوده سنی 18-35 سال در فراخوان‌ها
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="position: relative; margin-bottom: 30px; padding-bottom: 20px;">
+                    <div style="position: absolute; right: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple); transform: translateX(50%);"></div>
+                    <div style="padding-right: 40px;">
+                        <h4 style="color: var(--neon-purple); margin-bottom: 10px;">فاز دوم - نگهداشت نیروها</h4>
+                        <ul style="list-style-type: none;">
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="fas fa-spinner" style="color: var(--neon-blue); position: absolute; right: 0; top: 5px;"></i>
+                                طراحی سیستم امتیازدهی عملکرد
+                            </li>
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="fas fa-spinner" style="color: var(--neon-blue); position: absolute; right: 0; top: 5px;"></i>
+                                ایجاد پنل ارتباطی فریلنسر-سرپرست
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="position: relative;">
+                    <div style="position: absolute; right: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); transform: translateX(50%);"></div>
+                    <div style="padding-right: 40px;">
+                        <h4 style="color: var(--neon-pink); margin-bottom: 10px;">فاز سوم - اتوماسیون قراردادها</h4>
+                        <ul style="list-style-type: none;">
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="far fa-circle" style="color: var(--accent-color); position: absolute; right: 0; top: 5px;"></i>
+                                توسعه قالب قرارداد هوشمند
+                            </li>
+                            <li style="margin-bottom: 8px; position: relative; padding-right: 15px;">
+                                <i class="far fa-circle" style="color: var(--accent-color); position: absolute; right: 0; top: 5px;"></i>
+                                ایجاد بانک اطلاعاتی استاندارد فریلنسرها
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="sections-container" style="margin-top: 50px;">
+            <section class="section neon-border">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i>منافع سازمانی</h2>
+                
+                <div class="item">
+                    <i class="fas fa-check" style="color: var(--success-color); margin-left: 10px;"></i>
+                    کاهش 40% خطاهای صدور بیمه‌نامه
+                </div>
+                
+                <div class="item">
+                    <i class="fas fa-check" style="color: var(--success-color); margin-left: 10px;"></i>
+                    افزایش 25% رضایت فریلنسرها
+                </div>
+                
+                <div class="item">
+                    <i class="fas fa-check" style="color: var(--success-color); margin-left: 10px;"></i>
+                    صرفه‌جویی 30% در زمان پردازش قراردادها
+                </div>
+            </section>
+            
+            <section class="section neon-border">
+                <h2 class="section-title"><i class="fas fa-cogs"></i>نیازمندی‌های فنی</h2>
+                
+                <div class="item">
+                    <i class="fas fa-server" style="color: var(--neon-blue); margin-left: 10px;"></i>
+                    توسعه API برای ارتباط با سامانه بیمه
+                </div>
+                
+                <div class="item">
+                    <i class="fas fa-database" style="color: var(--neon-blue); margin-left: 10px;"></i>
+                    طراحی دیتابیس متمرکز فریلنسرها
+                </div>
+                
+                <div class="item">
+                    <i class="fas fa-mobile-alt" style="color: var(--neon-blue); margin-left: 10px;"></i>
+                    توسعه پنل مدیریت موبایل
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="logo">گروه بهبود فرآیندها</div>
+            <p>ارائه پیشنهادات برای ارتقای سیستم‌های سازمان</p>
+            <p class="date">تاریخ ارائه: ۱۴۰۳/۰۱/۲۵</p>
+            
+            <!-- Social Icons -->
+            <div style="margin-top: 20px;">
+                <a href="#" style="color: white; margin: 0 10px; font-size: 1.2rem;"><i class="fab fa-telegram"></i></a>
+                <a href="#" style="color: white; margin: 0 10px; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
+                <a href="#" style="color: white; margin: 0 10px; font-size: 1.2rem;"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Additional animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section, .highlight-box').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Floating animation for header
+            setInterval(() => {
+                const header = document.querySelector('header');
+                header.classList.toggle('floating');
+            }, 3000);
+
+            // Random glowing dots
+            function createGlowingDot() {
+                const dot = document.createElement('div');
+                dot.className = 'glowing-dot';
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const size = 5 + Math.random() * 10;
+                const delay = Math.random() * 5;
+                const duration = 3 + Math.random() * 7;
+                const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                
+                dot.style.left = `${left}%`;
+                dot.style.top = `${top}%`;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.animationDelay = `${delay}s`;
+                dot.style.animationDuration = `${duration}s`;
+                dot.style.background = color;
+                dot.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                
+                document.body.appendChild(dot);
+                
+                // Remove dot after animation completes
+                setTimeout(() => {
+                    dot.remove();
+                }, duration * 1000);
+            }
+            
+            // Create initial dots
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createGlowingDot, i * 1000);
+            }
+            
+            // Continue creating dots
+            setInterval(createGlowingDot, 3000);
+        });
+    </script>
+</body>
+</html>
