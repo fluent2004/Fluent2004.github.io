@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیشنهادات بهبود فرآیندهای سازمان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Iranian+Sans&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Iranian Sans', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--secondary-color);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .item {
+            margin-bottom: 15px;
+            padding-right: 20px;
+            position: relative;
+            animation: fadeInRight 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .item::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .priority {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .high { background-color: var(--accent-color); }
+        .medium { background-color: var(--secondary-color); }
+        .low { background-color: var(--success-color); }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: 50px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .date {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Delays for items */
+        .item:nth-child(1) { animation-delay: 0.2s; }
+        .item:nth-child(2) { animation-delay: 0.4s; }
+        .item:nth-child(3) { animation-delay: 0.6s; }
+        .item:nth-child(4) { animation-delay: 0.8s; }
+        .item:nth-child(5) { animation-delay: 1s; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sections-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Special effects */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 30px 0;
+            animation: fadeIn 1s ease;
+        }
+        
+        .highlight-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .highlight-title i {
+            margin-left: 10px;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="floating">
+        <div class="container">
+            <h1>پیشنهادات بهبود فرآیندهای سازمان</h1>
+            <p class="subtitle">بهینه‌سازی فرآیندهای جذب، نگهداشت نیروها و قراردادها</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="highlight-box pulse">
+            <h3 class="highlight-title"><i class="fas fa-lightbulb"></i>چکیده پیشنهادات</h3>
+            <p>این ارائه شامل پیشنهادات کلیدی در سه حوزه اصلی جذب نیرو، نگهداشت نیروهای موجود و بهبود فرآیندهای قرارداد می‌باشد. همچنین راهکارهایی برای کاهش خطاهای سیستم پیشنهاد شده است.</p>
+        </div>
+        
+        <div class="sections-container">
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-user-plus"></i>پیشنهادات جذب نیرو</h2>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    محدوده سنی را کوچک‌تر کنیم (بین 18 تا 35 سال)
+                </div>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    پراکندگی جمعیت داشته باشیم که برقشان قطع نشود و نصف نیروهایمان از دست نروند
+                </div>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    بررسی سطح مهارت کامپیوتری افراد به روشی استاندارد
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-users"></i>پیشنهادات نگهداشت نیروها</h2>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    افزایش حقوق‌ها بر اساس سطح بندی عملکرد (مانند سیستم امتیازدهی اسنپ و تپسی)
+                </div>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    ایجاد سیستم ارزیابی برای ارتباط بهتر بین فریلنسرها و سرپرست‌ها
+                </div>
+                
+                <div class="item">
+                    <span class="priority low">کم</span>
+                    تفکیک بنوس‌ها بر اساس شرایط هر لاین و شرکت بیمه
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-file-contract"></i>پیشنهادات قراردادها</h2>
+                
+                <div class="item">
+                    <span class="priority medium">متوسط</span>
+                    تغییر فرمت قرارداد برای تنظیم خودکار با نرم‌افزار
+                </div>
+                
+                <div class="item">
+                    <span class="priority low">کم</span>
+                    ارسال گروهی قراردادها (مثلاً برای گروه‌های خاص مانند خانم‌های یاری)
+                </div>
+                
+                <div class="item">
+                    <span class="priority high">ضروری</span>
+                    ایجاد لیست استاندارد از اطلاعات فریلنسرها در یک شیت واحد
+                </div>
+            </section>
+        </div>
+        
+        <div class="highlight-box">
+            <h3 class="highlight-title"><i class="fas fa-exclamation-triangle"></i>پیشنهاد برای کاهش خطاها</h3>
+            <p>قبل از بسته شدن سفارش، یک بار با مشخصاتی که کاربر برای صدور ماشین وارد کرده، از سامانه استعلام گرفته شود. در صورت مغایرت مشخصات یا نبود بیمه‌نامه معتبر، یا اجازه بسته شدن سفارش داده نشود یا به طور خودکار تگ به "بررسی قبل از صدور" تغییر کند.</p>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="logo">گروه بهبود فرآیندها</div>
+            <p>ارائه پیشنهادات برای ارتقای سیستم‌های سازمان</p>
+            <p class="date">تاریخ ارائه: ۱۴۰۳/۰۱/۲۵</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Additional animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Floating animation for header
+            setInterval(() => {
+                const header = document.querySelector('header');
+                header.classList.toggle('floating');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
