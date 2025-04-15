@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نقشه فریلنسرهای ایران</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body, html { height: 100%; margin: 0; }
+    #map { height: 100vh; }
+    .sidebar {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .legend {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      line-height: 1.5;
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: right;
+      margin-left: 8px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div class="sidebar">
+  <h5 class="text-center">مدیریت فریلنسرها</h5>
+  <div class="mb-2">
+    <label class="form-label">استان</label>
+    <select id="province-filter" class="form-select">
+      <option value="all">همه استان‌ها</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">شهر</label>
+    <select id="city-filter" class="form-select">
+      <option value="all">همه شهرها</option>
+    </select>
+  </div>
+  <hr>
+  <h6>افزودن فریلنسر</h6>
+  <input type="text" id="freelancer-name" class="form-control mb-2" placeholder="نام فریلنسر">
+  <select id="new-province" class="form-select mb-2">
+    <option value="">انتخاب استان</option>
+  </select>
+  <select id="new-city" class="form-select mb-2">
+    <option value="">انتخاب شهر</option>
+  </select>
+  <button class="btn btn-primary w-100" id="add-btn">افزودن</button>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
