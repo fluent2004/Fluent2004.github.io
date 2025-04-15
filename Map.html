@@ -1,118 +1,381 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نقشه فریلنسرهای ایران</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        #map-container {
-            width: 100%;
-            height: 100vh;
-        }
-        .info-panel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            max-width: 300px;
-        }
-    </style>
+  <title>نقشه فریلنسرهای ایران با جستجوی خودکار</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #map { height: 100vh; }
+    .control-panel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+    .legend {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      line-height: 1.5;
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: right;
+      margin-left: 8px;
+      opacity: 0.7;
+    }
+    #loading {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1001;
+      background: rgba(255,255,255,0.8);
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-    <div class="info-panel">
-        <h2>فریلنسرهای ایران</h2>
-        <div id="freelancer-info">روی استان کلیک کنید</div>
-    </div>
-    <div id="map-container"></div>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script>
-        // ایجاد نقشه
-        const map = L.map('map-container').setView([32.4279, 53.6880], 5);
-        
-        // اضافه کردن لایه پایه
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+<div id="map"></div>
+<div id="loading">در حال پیدا کردن موقعیت...</div>
 
-        // بارگذاری GeoJSON استانهای ایران (نسخه ساده شده)
-        fetch('https://raw.githubusercontent.com/ali-h/iran-geojson/master/iran_provinces_simple.geojson')
-            .then(response => response.json())
-            .then(data => {
-                L.geoJSON(data, {
-                    style: {
-                        color: '#888',
-                        weight: 1,
-                        fillOpacity: 0.3,
-                        fillColor: '#f5f5f5'
-                    },
-                    onEachFeature: function(feature, layer) {
-                        layer.on({
-                            click: function(e) {
-                                // هنگام کلیک بر روی استان
-                                showFreelancersInProvince(feature.properties.name);
-                            },
-                            mouseover: function(e) {
-                                layer.setStyle({
-                                    fillColor: '#ffcc00',
-                                    fillOpacity: 0.7
-                                });
-                            },
-                            mouseout: function(e) {
-                                layer.setStyle({
-                                    fillColor: '#f5f5f5',
-                                    fillOpacity: 0.3
-                                });
-                            }
-                        });
-                    }
-                }).addTo(map);
-            })
-            .catch(error => {
-                console.error('Error loading GeoJSON:', error);
-                alert('خطا در بارگذاری نقشه استانها');
-            });
+<div class="control-panel">
+  <h4 class="text-center mb-3">مدیریت فریلنسرها</h4>
+  <div class="mb-3">
+    <label class="form-label">استان:</label>
+    <select id="province-filter" class="form-select">
+      <option value="all">همه استان‌ها</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">شهر:</label>
+    <select id="city-filter" class="form-select">
+      <option value="all">همه شهرها</option>
+    </select>
+  </div>
+  <hr>
+  <h5 class="mb-3">افزودن فریلنسر جدید</h5>
+  <div class="mb-3">
+    <input type="text" id="freelancer-name" class="form-control" placeholder="نام فریلنسر">
+  </div>
+  <div class="mb-3">
+    <select id="new-province" class="form-select">
+      <option value="">انتخاب استان</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <input type="text" id="new-city" class="form-control" placeholder="نام شهر (مثال: ششتمد)">
+    <small class="text-muted">سیستم سعی می‌کند موقعیت را خودکار پیدا کند</small>
+  </div>
+  <button id="add-btn" class="btn btn-primary w-100">افزودن فریلنسر</button>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // داده‌های اولیه
+  let freelancers = JSON.parse(localStorage.getItem('freelancers')) || [
+    { name: "علی محمدی", city: "تهران", province: "تهران", lat: 35.6892, lng: 51.3890 },
+    { name: "مریم احمدی", city: "اصفهان", province: "اصفهان", lat: 32.6539, lng: 51.6660 },
+    { name: "رضا حسینی", city: "مشهد", province: "خراسان رضوی", lat: 36.2605, lng: 59.6168 }
+  ];
+
+  // دیتابیس موقعیت‌های ذخیره شده
+  let cityLocations = JSON.parse(localStorage.getItem('cityLocations')) || {};
+
+  // استان‌های ایران
+  const provinces = [
+    "آذربایجان شرقی", "آذربایجان غربی", "اردبیل", "اصفهان", "البرز", 
+    "ایلام", "بوشهر", "تهران", "چهارمحال و بختیاری", "خراسان جنوبی",
+    "خراسان رضوی", "خراسان شمالی", "خوزستان", "زنجان", "سمنان",
+    "سیستان و بلوچستان", "فارس", "قزوین", "قم", "کردستان",
+    "کرمان", "کرمانشاه", "کهگیلویه و بویراحمد", "گلستان", "گیلان",
+    "لرستان", "مازندران", "مرکزی", "هرمزگان", "همدان", "یزد"
+  ];
+
+  // ایجاد نقشه
+  const map = L.map('map').setView([32.4279, 53.6880], 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // لایه‌های نقشه
+  let markersLayer = L.layerGroup().addTo(map);
+  let circlesLayer = L.layerGroup().addTo(map);
+
+  // پر کردن انتخابگر استان‌ها
+  const provinceFilter = document.getElementById('province-filter');
+  const newProvince = document.getElementById('new-province');
+  
+  provinces.forEach(province => {
+    provinceFilter.innerHTML += `<option value="${province}">${province}</option>`;
+    newProvince.innerHTML += `<option value="${province}">${province}</option>`;
+  });
+
+  // تابع جستجوی موقعیت شهر
+  async function findCityLocation(cityName, provinceName) {
+    const cacheKey = `${provinceName}-${cityName}`;
+    
+    // بررسی کش
+    if (cityLocations[cacheKey]) {
+      return cityLocations[cacheKey];
+    }
+    
+    // نمایش loading
+    document.getElementById('loading').style.display = 'block';
+    
+    try {
+      // جستجو در Nominatim
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName + ', ' + provinceName + ', ایران')}&accept-language=fa`
+      );
+      
+      const data = await response.json();
+      
+      if (data.length > 0) {
+        // ذخیره در کش
+        cityLocations[cacheKey] = {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon)
+        };
         
-        // داده‌های نمونه فریلنسرها
-        const freelancers = [
-            {name: "علی محمدی", skills: "طراحی وب", city: "تهران", province: "تهران", lat: 35.6892, lng: 51.3890},
-            {name: "مریم احمدی", skills: "برنامه‌نویسی موبایل", city: "اصفهان", province: "اصفهان", lat: 32.6539, lng: 51.6660},
-            {name: "رضا حسینی", skills: "گرافیک", city: "مشهد", province: "خراسان رضوی", lat: 36.2605, lng: 59.6168}
-        ];
+        localStorage.setItem('cityLocations', JSON.stringify(cityLocations));
         
-        // نمایش فریلنسرها روی نقشه
-        freelancers.forEach(freelancer => {
-            L.marker([freelancer.lat, freelancer.lng])
-                .bindPopup(`<b>${freelancer.name}</b><br>مهارت: ${freelancer.skills}<br>${freelancer.city}`)
-                .addTo(map);
-        });
-        
-        // تابع نمایش فریلنسرهای یک استان
-        function showFreelancersInProvince(provinceName) {
-            const filtered = freelancers.filter(f => f.province === provinceName);
-            const infoDiv = document.getElementById('freelancer-info');
-            
-            if (filtered.length > 0) {
-                let html = `<h3>فریلنسرهای ${provinceName}</h3><ul>`;
-                filtered.forEach(f => {
-                    html += `<li>${f.name} - ${f.skills} (${f.city})</li>`;
-                });
-                html += '</ul>';
-                infoDiv.innerHTML = html;
-            } else {
-                infoDiv.innerHTML = `<p>هیچ فریلنسری در ${provinceName} یافت نشد</p>`;
-            }
+        return cityLocations[cacheKey];
+      } else {
+        // اگر شهر پیدا نشد، مرکز استان را برگردان
+        const provinceCenter = await findProvinceCenter(provinceName);
+        if (provinceCenter) {
+          cityLocations[cacheKey] = provinceCenter;
+          localStorage.setItem('cityLocations', JSON.stringify(cityLocations));
+          return provinceCenter;
         }
-    </script>
+        
+        throw new Error('موقعیت پیدا نشد');
+      }
+    } catch (error) {
+      console.error('Error finding location:', error);
+      throw error;
+    } finally {
+      document.getElementById('loading').style.display = 'none';
+    }
+  }
+  
+  // تابع پیدا کردن مرکز استان
+  async function findProvinceCenter(provinceName) {
+    const cacheKey = `مرکز-${provinceName}`;
+    
+    if (cityLocations[cacheKey]) {
+      return cityLocations[cacheKey];
+    }
+    
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(provinceName + ', ایران')}&accept-language=fa&featureType=state`
+      );
+      
+      const data = await response.json();
+      
+      if (data.length > 0) {
+        cityLocations[cacheKey] = {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon)
+        };
+        
+        localStorage.setItem('cityLocations', JSON.stringify(cityLocations));
+        return cityLocations[cacheKey];
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error finding province center:', error);
+      return null;
+    }
+  }
+
+  // تابع بروزرسانی شهرها بر اساس استان انتخاب شده
+  function updateCities(province) {
+    const cityFilter = document.getElementById('city-filter');
+    cityFilter.innerHTML = '<option value="all">همه شهرها</option>';
+    
+    if (province === 'all') {
+      const allCities = [...new Set(freelancers.map(f => f.city))];
+      allCities.forEach(city => {
+        cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
+      });
+    } else {
+      const provinceCities = [...new Set(freelancers
+        .filter(f => f.province === province)
+        .map(f => f.city))];
+      
+      provinceCities.forEach(city => {
+        cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
+      });
+    }
+  }
+
+  // تابع نمایش فریلنسرها روی نقشه
+  function updateMap() {
+    markersLayer.clearLayers();
+    circlesLayer.clearLayers();
+    
+    const province = provinceFilter.value;
+    const city = cityFilter.value;
+    
+    let filteredFreelancers = freelancers;
+    
+    if (province !== 'all') {
+      filteredFreelancers = filteredFreelancers.filter(f => f.province === province);
+    }
+    
+    if (city !== 'all') {
+      filteredFreelancers = filteredFreelancers.filter(f => f.city === city);
+    }
+    
+    // گروه‌بندی بر اساس شهر
+    const cityGroups = {};
+    filteredFreelancers.forEach(f => {
+      if (!cityGroups[f.city]) {
+        cityGroups[f.city] = {
+          count: 0,
+          lat: f.lat,
+          lng: f.lng,
+          province: f.province,
+          freelancers: []
+        };
+      }
+      cityGroups[f.city].count++;
+      cityGroups[f.city].freelancers.push(f);
+    });
+    
+    // افزودن دایره‌ها و مارکرها
+    Object.keys(cityGroups).forEach(city => {
+      const group = cityGroups[city];
+      const radius = Math.min(Math.max(group.count * 2000, 5000), 30000);
+      
+      // دایره نشان‌دهنده تعداد
+      L.circle([group.lat, group.lng], {
+        color: '#3388ff',
+        fillColor: '#3388ff',
+        fillOpacity: 0.2,
+        radius: radius
+      }).addTo(circlesLayer);
+      
+      // مارکر مرکز
+      const marker = L.marker([group.lat, group.lng]).addTo(markersLayer);
+      
+      // محتوای پاپ‌آپ
+      let popupContent = `<b>${city}</b><br>استان: ${group.province}<br>تعداد فریلنسرها: ${group.count}<hr>`;
+      group.freelancers.forEach(f => {
+        popupContent += `${f.name}<br>`;
+      });
+      
+      marker.bindPopup(popupContent);
+    });
+  }
+
+  // رویداد تغییر فیلتر
+  provinceFilter.addEventListener('change', function() {
+    updateCities(this.value);
+    updateMap();
+  });
+
+  document.getElementById('city-filter').addEventListener('change', updateMap);
+
+  // افزودن فریلنسر جدید
+  document.getElementById('add-btn').addEventListener('click', async function() {
+    const name = document.getElementById('freelancer-name').value;
+    const province = document.getElementById('new-province').value;
+    const city = document.getElementById('new-city').value;
+    
+    if (!name || !province || !city) {
+      alert('لطفا نام، استان و شهر را وارد کنید');
+      return;
+    }
+    
+    try {
+      // پیدا کردن موقعیت شهر
+      const location = await findCityLocation(city, province);
+      
+      if (!location) {
+        throw new Error('موقعیت شهر پیدا نشد');
+      }
+      
+      const newFreelancer = { 
+        name, 
+        province, 
+        city, 
+        lat: location.lat, 
+        lng: location.lng 
+      };
+      
+      freelancers.push(newFreelancer);
+      localStorage.setItem('freelancers', JSON.stringify(freelancers));
+      
+      // بروزرسانی فیلترها و نقشه
+      updateCities(provinceFilter.value);
+      updateMap();
+      
+      // پاک کردن فرم
+      document.getElementById('freelancer-name').value = '';
+      document.getElementById('new-city').value = '';
+      
+      alert(`فریلنسر جدید در ${city} با موفقیت اضافه شد`);
+      
+      // زوم به موقعیت جدید
+      map.setView([location.lat, location.lng], 10);
+      
+    } catch (error) {
+      alert('خطا در پیدا کردن موقعیت شهر: ' + error.message);
+      console.error(error);
+    }
+  });
+
+  // راه‌اندازی اولیه
+  updateCities('all');
+  updateMap();
+
+  // افزودن کنترل موقعیت‌یابی
+  map.locate({setView: false, maxZoom: 10});
+
+  // افزودن راهنما (Legend)
+  const legend = L.control({position: 'bottomleft'});
+  legend.onAdd = function(map) {
+    const div = L.DomUtil.create('div', 'legend');
+    div.innerHTML = `
+      <h6>راهنما</h6>
+      <i style="background: #3388ff"></i> تعداد فریلنسرها<br>
+      <i style="background: #2c3e50"></i> موقعیت شما
+    `;
+    return div;
+  };
+  legend.addTo(map);
+
+  // افزودن نشانگر موقعیت کاربر
+  function onLocationFound(e) {
+    L.circleMarker(e.latlng, {
+      radius: 8,
+      color: '#2c3e50',
+      fillColor: '#2c3e50',
+      fillOpacity: 1
+    }).addTo(map)
+      .bindPopup("شما اینجا هستید").openPopup();
+  }
+  map.on('locationfound', onLocationFound);
+</script>
+
 </body>
 </html>
