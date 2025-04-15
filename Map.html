@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقشه فریلنسرهای ایران</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #map-container {
+            width: 100%;
+            height: 100vh;
+        }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-panel">
+        <h2>فریلنسرهای ایران</h2>
+        <div id="freelancer-info">روی استان کلیک کنید</div>
+    </div>
+    <div id="map-container"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // ایجاد نقشه
+        const map = L.map('map-container').setView([32.4279, 53.6880], 5);
+        
+        // اضافه کردن لایه پایه
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // بارگذاری GeoJSON استانهای ایران (نسخه ساده شده)
+        fetch('https://raw.githubusercontent.com/ali-h/iran-geojson/master/iran_provinces_simple.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: {
+                        color: '#888',
+                        weight: 1,
+                        fillOpacity: 0.3,
+                        fillColor: '#f5f5f5'
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.on({
+                            click: function(e) {
+                                // هنگام کلیک بر روی استان
+                                showFreelancersInProvince(feature.properties.name);
+                            },
+                            mouseover: function(e) {
+                                layer.setStyle({
+                                    fillColor: '#ffcc00',
+                                    fillOpacity: 0.7
+                                });
+                            },
+                            mouseout: function(e) {
+                                layer.setStyle({
+                                    fillColor: '#f5f5f5',
+                                    fillOpacity: 0.3
+                                });
+                            }
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(error => {
+                console.error('Error loading GeoJSON:', error);
+                alert('خطا در بارگذاری نقشه استانها');
+            });
+        
+        // داده‌های نمونه فریلنسرها
+        const freelancers = [
+            {name: "علی محمدی", skills: "طراحی وب", city: "تهران", province: "تهران", lat: 35.6892, lng: 51.3890},
+            {name: "مریم احمدی", skills: "برنامه‌نویسی موبایل", city: "اصفهان", province: "اصفهان", lat: 32.6539, lng: 51.6660},
+            {name: "رضا حسینی", skills: "گرافیک", city: "مشهد", province: "خراسان رضوی", lat: 36.2605, lng: 59.6168}
+        ];
+        
+        // نمایش فریلنسرها روی نقشه
+        freelancers.forEach(freelancer => {
+            L.marker([freelancer.lat, freelancer.lng])
+                .bindPopup(`<b>${freelancer.name}</b><br>مهارت: ${freelancer.skills}<br>${freelancer.city}`)
+                .addTo(map);
+        });
+        
+        // تابع نمایش فریلنسرهای یک استان
+        function showFreelancersInProvince(provinceName) {
+            const filtered = freelancers.filter(f => f.province === provinceName);
+            const infoDiv = document.getElementById('freelancer-info');
+            
+            if (filtered.length > 0) {
+                let html = `<h3>فریلنسرهای ${provinceName}</h3><ul>`;
+                filtered.forEach(f => {
+                    html += `<li>${f.name} - ${f.skills} (${f.city})</li>`;
+                });
+                html += '</ul>';
+                infoDiv.innerHTML = html;
+            } else {
+                infoDiv.innerHTML = `<p>هیچ فریلنسری در ${provinceName} یافت نشد</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
