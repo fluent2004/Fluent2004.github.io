@@ -3,147 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محمدرضا مرادی نور | مشاور بیمه</title>
+    <title>تحلیل ریسک مرگ در انواع حمل‌ونقل</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
         }
         
         body {
-            background-color: #000;
-            color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
         
-        .container {
-            max-width: 100%;
-            width: 100%;
+        .slide {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
         
-        .header {
-            margin-bottom: 40px;
+        .slide:hover {
+            transform: translateY(-5px);
         }
         
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+        .slide-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+        .slide-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .slide-subtitle {
+            margin: 5px 0 0;
+            font-size: 16px;
             font-weight: 300;
-            background: linear-gradient(90deg, #f3ec78, #af4261);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            opacity: 0.9;
         }
         
-        h2 {
-            font-size: 1.5rem;
+        .slide-body {
+            padding: 25px;
+        }
+        
+        .intro-slide {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+        }
+        
+        .intro-slide .slide-header {
+            background: transparent;
+        }
+        
+        .intro-title {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .intro-subtitle {
+            font-size: 22px;
+            margin-bottom: 30px;
             font-weight: 300;
-            color: #ccc;
         }
         
-        .social-buttons {
+        .presenter-info {
+            margin-top: 40px;
+            font-size: 18px;
+        }
+        
+        .risk-definition {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            align-items: center;
+            justify-content: space-around;
+            margin: 20px 0;
         }
         
-        .btn {
+        .risk-formula {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed var(--secondary-color);
+            border-radius: 10px;
+        }
+        
+        .transport-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .transport-item {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .transport-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .transport-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .data-table tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .chart-container {
+            height: 400px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin: 30px auto;
+            max-width: 800px;
+        }
+        
+        .matrix-cell {
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            width: 100%;
+            font-weight: bold;
+            border-radius: 4px;
         }
         
-        .btn i {
-            margin-left: 10px;
-            font-size: 1.3rem;
-        }
-        
-        .instagram {
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        .low-risk {
+            background-color: #2ecc71;
             color: white;
         }
         
-        .whatsapp {
-            background-color: #25D366;
+        .medium-risk {
+            background-color: #f39c12;
             color: white;
         }
         
-        .linkedin {
-            background-color: #0077b5;
+        .high-risk {
+            background-color: #e74c3c;
             color: white;
         }
         
-        .resume {
-            background: linear-gradient(45deg, #6e45e2, #89d4cf);
-            color: white;
+        .conclusion {
+            background-color: var(--light-color);
+            padding: 25px;
+            border-left: 5px solid var(--secondary-color);
+            margin: 20px 0;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .references {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .references ul {
+            padding-right: 20px;
         }
         
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+            .transport-list {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            h2 {
-                font-size: 1.2rem;
+            .intro-title {
+                font-size: 32px;
             }
             
-            .btn {
-                padding: 12px 20px;
-                font-size: 1rem;
+            .intro-subtitle {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>محمدرضا مرادی نور</h1>
-            <h2>مشاور و کارشناس تخصصی بیمه</h2>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide intro-slide">
+            <div class="slide-header">
+                <h1 class="intro-title">تحلیل ریسک مرگ در انواع حمل‌ونقل</h1>
+                <p class="intro-subtitle">ارزیابی و مقایسه خطرات جانی در روش‌های مختلف سفر</p>
+            </div>
+            <div class="slide-body">
+                <div class="presenter-info">
+                    <p>درس: مدیریت ریسک</p>
+                    <p>ارائه‌دهنده: [نام شما]</p>
+                    <p>استاد: [نام استاد]</p>
+                    <p>تاریخ: [تاریخ ارائه]</p>
+                </div>
+            </div>
         </div>
         
-        <div class="social-buttons">
-            <a href="https://instagram.com/mc.sport" class="btn instagram">
-                <i class="fab fa-instagram"></i>
-                اینستاگرام
-            </a>
-            
-            <a href="https://wa.me/0989335318919" class="btn whatsapp">
-                <i class="fab fa-whatsapp"></i>
-                واتساپ
-            </a>
-            
-            <a href="https://linkedin.com/in/yourprofile" class="btn linkedin">
-                <i class="fab fa-linkedin"></i>
-                لینکدین
-            </a>
-            
-            <a href="resume.html" class="btn resume">
-                <i class="fas fa-file-alt"></i>
-                رزومه کاری
-            </a>
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">مقدمه</h2>
+                <p class="slide-subtitle">چرا بررسی ریسک مرگ در حمل‌ونقل مهم است؟</p>
+            </div>
+            <div class="slide-body">
+                <p>حمل‌ونقل بخشی جدایی‌ناپذیر از زندگی مدرن است. هر روز میلیون‌ها نفر از وسایل نقلیه مختلف استفاده می‌کنند، اما آیا تا به حال به خطرات جانی هر کدام فکر کرده‌اید؟</p>
+                <ul>
+                    <li>بررسی ریسک به ما کمک می‌کند انتخاب‌های آگاهانه‌تری داشته باشیم</li>
+                    <li>درک خطرات به برنامه‌ریزی بهتر برای سفرها کمک می‌کند</li>
+                    <li>شناخت عوامل خطر می‌تواند به کاهش تلفات جانی منجر شود</li>
+                    <li>مقایسه روش‌های مختلف حمل‌ونقل دیدگاه جدیدی به ما می‌دهد</li>
+                </ul>
+                <p>در این ارائه، ریسک مرگ در روش‌های مختلف حمل‌ونقل را بر اساس آخرین داده‌های علمی بررسی خواهیم کرد.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Risk Definition -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">تعریف ریسک</h2>
+                <p class="slide-subtitle">ریسک چگونه محاسبه می‌شود؟</p>
+            </div>
+            <div class="slide-body">
+                <p>در مدیریت ریسک، ریسک به صورت زیر تعریف می‌شود:</p>
+                <div class="risk-definition">
+                    <div class="risk-formula">
+                        ریسک = احتمال وقوع × شدت پیامد
+                    </div>
+                </div>
+                <p>در این تحلیل:</p>
+                <ul>
+                    <li><strong>شدت پیامد:</strong> مرگ (بالاترین سطح شدت)</li>
+                    <li><strong>احتمال وقوع:</strong> نرخ مرگ به ازای هر واحد مسافت یا سفر</li>
+                </ul>
+                <p>ما از معیار "مرگ به ازای هر میلیارد کیلومتر مسافت طی شده" استفاده می‌کنیم که یکی از استانداردترین روش‌های مقایسه ایمنی حمل‌ونقل است.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Transportation Methods -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">وسایل حمل‌ونقل مورد بررسی</h2>
+                <p class="slide-subtitle">مقایسه روش‌های مختلف جابه‌جایی</p>
+            </div>
+            <div class="slide-body">
+                <div class="transport-list">
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-car"></i></div>
+                        <h3>خودروی شخصی</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-motorcycle"></i></div>
+                        <h3>موتورسیکلت</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-bicycle"></i></div>
+                        <h3>دوچرخه</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-walking"></i></div>
+                        <h3>پیاده‌روی</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-bus"></i></div>
+                        <h3>اتوبوس</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-train"></i></div>
+                        <h3>قطار</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-plane"></i></div>
+                        <h3>هواپیما</h3>
+                    </div>
+                    <div class="transport-item">
+                        <div class="transport-icon"><i class="fas fa-ship"></i></div>
+                        <h3>کشتی</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Statistical Data -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">داده‌های آماری</h2>
+                <p class="slide-subtitle">نرخ مرگ به ازای هر 1 میلیارد کیلومتر</p>
+            </div>
+            <div class="slide-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>وسیله نقلیه</th>
+                            <th>تعداد مرگ</th>
+                            <th>ریسک نسبی</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>هواپیما</td>
+                            <td>0.05 نفر</td>
+                            <td>بسیار کم</td>
+                        </tr>
+                        <tr>
+                            <td>قطار</td>
+                            <td>0.6 نفر</td>
+                            <td>کم</td>
+                        </tr>
+                        <tr>
+                            <td>اتوبوس</td>
+                            <td>0.4 نفر</td>
+                            <td>کم</td>
+                        </tr>
+                        <tr>
+                            <td>خودروی شخصی</td>
+                            <td>3 نفر</td>
+                            <td>متوسط</td>
+                        </tr>
+                        <tr>
+                            <td>کشتی</td>
+                            <td>2.5 نفر</td>
+                            <td>متوسط</td>
+                        </tr>
+                        <tr>
+                            <td>پیاده‌روی</td>
+                            <td>50 نفر</td>
+                            <td>زیاد</td>
+                        </tr>
+                        <tr>
+                            <td>دوچرخه</td>
+                            <td>45 نفر</td>
+                            <td>زیاد</td>
+                        </tr>
+                        <tr>
+                            <td>موتورسیکلت</td>
+                            <td>250 نفر</td>
+                            <td>بسیار زیاد</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="references">منبع: European Transport Safety Council, National Safety Council, WHO - 2023</p>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Visual Chart -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">مقایسه تصویری ریسک مرگ</h2>
+                <p class="slide-subtitle">نمودار مقایسه‌ای نرخ مرگ در وسایل نقلیه مختلف</p>
+            </div>
+            <div class="slide-body">
+                <div class="chart-container">
+                    <img src="https://via.placeholder.com/800x400?text=نمودار+مقایسه+ریسک+مرگ+در+حمل+ونقل" alt="نمودار مقایسه ریسک مرگ" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                </div>
+                <p>این نمودار به وضوح نشان می‌دهد که موتورسیکلت‌ها خطرناک‌ترین وسیله نقلیه از نظر ریسک مرگ هستند، در حالی که هواپیما یکی از ایمن‌ترین روش‌های سفر محسوب می‌شود.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Risk Analysis -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">تحلیل ریسک</h2>
+                <p class="slide-subtitle">بررسی عوامل موثر بر ریسک مرگ در حمل‌ونقل</p>
+            </div>
+            <div class="slide-body">
+                <h3>ایمن‌ترین روش‌های حمل‌ونقل:</h3>
+                <ul>
+                    <li><strong>هواپیما:</strong> با وجود ارتفاع و سرعت بالا، به دلیل استانداردهای ایمنی بسیار سختگیرانه، آموزش خلبانان و سیستم‌های پشتیبان متعدد، ایمن‌ترین روش سفر است.</li>
+                    <li><strong>قطار و اتوبوس:</strong> به دلیل مسیرهای اختصاصی و کنترل مرکزی، ریسک پایینی دارند.</li>
+                </ul>
+                
+                <h3>پرخطرترین روش‌ها:</h3>
+                <ul>
+                    <li><strong>موتورسیکلت:</strong> عدم محافظت فیزیکی، سرعت بالا و احتمال برخورد با وسایل دیگر</li>
+                    <li><strong>دوچرخه و پیاده‌روی:</strong> آسیب‌پذیری در برابر وسایل نقلیه سنگین</li>
+                </ul>
+                
+                <h3>نکات جالب توجه:</h3>
+                <ul>
+                    <li>احتمال مرگ در موتورسیکلت 5000 برابر بیشتر از هواپیما است!</li>
+                    <li>پیاده‌روی در شهرهای شلوغ می‌تواند خطرناک‌تر از رانندگی باشد</li>
+                    <li>خودروهای جدید به دلیل سیستم‌های ایمنی پیشرفته، ریسک کمتری نسبت به مدل‌های قدیمی دارند</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Risk Matrix -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">ماتریس ریسک حمل‌ونقل</h2>
+                <p class="slide-subtitle">طبقه‌بندی ریسک بر اساس احتمال و شدت</p>
+            </div>
+            <div class="slide-body">
+                <div class="risk-matrix">
+                    <div class="matrix-cell" style="grid-column: 2 / span 1; grid-row: 1;">احتمال کم</div>
+                    <div class="matrix-cell" style="grid-column: 3 / span 1; grid-row: 1;">احتمال متوسط</div>
+                    <div class="matrix-cell" style="grid-column: 4 / span 1; grid-row: 1;">احتمال زیاد</div>
+                    
+                    <div class="matrix-cell" style="grid-row: 2 / span 1; grid-column: 1;">شدت بالا</div>
+                    
+                    <div class="matrix-cell low-risk" style="grid-column: 2; grid-row: 2;">هواپیما</div>
+                    <div class="matrix-cell medium-risk" style="grid-column: 3; grid-row: 2;">خودرو</div>
+                    <div class="matrix-cell high-risk" style="grid-column: 4; grid-row: 2;">موتور</div>
+                    
+                    <div class="matrix-cell" style="grid-row: 3 / span 1; grid-column: 1;">شدت متوسط</div>
+                    
+                    <div class="matrix-cell low-risk" style="grid-column: 2; grid-row: 3;">قطار</div>
+                    <div class="matrix-cell medium-risk" style="grid-column: 3; grid-row: 3;">اتوبوس</div>
+                    <div class="matrix-cell high-risk" style="grid-column: 4; grid-row: 3;">دوچرخه</div>
+                    
+                    <div class="matrix-cell" style="grid-row: 4 / span 1; grid-column: 1;">شدت کم</div>
+                </div>
+                <p>این ماتریس نشان می‌دهد که چگونه وسایل مختلف حمل‌ونقل را می‌توان از نظر ریسک طبقه‌بندی کرد.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 9: Risk Factors -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">عوامل موثر بر ریسک مرگ</h2>
+                <p class="slide-subtitle">چه عواملی بر ایمنی حمل‌ونقل تاثیر می‌گذارند؟</p>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>زیرساخت‌ها:</strong> کیفیت جاده، ریل، باند فرودگاه و علائم راهنمایی</li>
+                    <li><strong>آموزش:</strong> سطح آموزش رانندگان، خلبانان و سایر کاربران</li>
+                    <li><strong>رفتار کاربران:</strong> رعایت قوانین، سرعت مجاز و عدم استفاده از مواد مخدر/الکل</li>
+                    <li><strong>شرایط محیطی:</strong> آب‌وهوا، نور و ترافیک</li>
+                    <li><strong>فناوری:</strong> سیستم‌های ایمنی فعال و غیرفعال در وسایل نقلیه</li>
+                    <li><strong>مقررات:</strong> قوانین و نظارت دولتی بر ایمنی حمل‌ونقل</li>
+                    <li><strong>فرهنگ ایمنی:</strong> نگرش جامعه نسبت به رعایت اصول ایمنی</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 10: Risk Management -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">مدیریت و کاهش ریسک</h2>
+                <p class="slide-subtitle">راهکارهای عملی برای افزایش ایمنی حمل‌ونقل</p>
+            </div>
+            <div class="slide-body">
+                <h3>راهکارهای فردی:</h3>
+                <ul>
+                    <li>استفاده از کمربند ایمنی در خودروها</li>
+                    <li>استفاده از کلاه ایمنی استاندارد برای موتور و دوچرخه</li>
+                    <li>اجتناب از رانندگی در شرایط خستگی یا تحت تاثیر مواد</li>
+                    <li>رعایت سرعت مجاز و فاصله ایمنی</li>
+                </ul>
+                
+                <h3>راهکارهای سازمانی و دولتی:</h3>
+                <ul>
+                    <li>بهبود طراحی جاده‌ها و تقاطع‌ها</li>
+                    <li>نصب سیستم‌های هوشمند نظارتی</li>
+                    <li>آموزش اجباری و دوره‌های تخصصی برای رانندگان</li>
+                    <li>توسعه حمل‌ونقل عمومی ایمن و کارآمد</li>
+                    <li>قوانین سخت‌گیرانه‌تر برای وسایل پرخطر مانند موتورسیکلت</li>
+                    <li>تحقیق و توسعه در فناوری‌های ایمنی وسایل نقلیه</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">نتیجه‌گیری</h2>
+                <p class="slide-subtitle">جمع‌بندی و پیام‌های کلیدی</p>
+            </div>
+            <div class="slide-body">
+                <div class="conclusion">
+                    <p>بررسی ریسک مرگ در انواع حمل‌ونقل نشان می‌دهد که:</p>
+                    <ul>
+                        <li>همه روش‌های حمل‌ونقل با درجاتی از ریسک همراه هستند، اما این ریسک به شدت متغیر است</li>
+                        <li>هواپیما، قطار و اتوبوس ایمن‌ترین روش‌های سفر هستند</li>
+                        <li>موتورسیکلت، دوچرخه و پیاده‌روی (در محیط‌های شهری) پرخطرترین روش‌ها محسوب می‌شوند</li>
+                        <li>انتخاب وسیله نقلیه مناسب می‌تواند تاثیر چشمگیری بر ایمنی سفر داشته باشد</li>
+                        <li>با مدیریت ریسک و رعایت اصول ایمنی می‌توان خطرات را به حداقل رساند</li>
+                    </ul>
+                </div>
+                <p>آگاهی از این ریسک‌ها به ما کمک می‌کند تا انتخاب‌های آگاهانه‌تری داشته باشیم و در عین حال، برای بهبود ایمنی حمل‌ونقل در سطح جامعه تلاش کنیم.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 12: References -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">منابع و مراجع</h2>
+                <p class="slide-subtitle">منابع مورد استفاده در این ارائه</p>
+            </div>
+            <div class="slide-body">
+                <div class="references">
+                    <ul>
+                        <li>European Transport Safety Council (ETSC) - Transport Safety Performance Indicators)</li>
+                        <li>World Health Organization (WHO) - Global Status Report on Road Safety 2023</li>
+                        <li>National Safety Council (US) - Injury Facts® 2023 Edition</li>
+                        <li>International Air Transport Association (IATA) - Safety Report 2023)</li>
+                        <li>International Transport Forum (ITF) - Road Safety Annual Report 2023)</li>
+                        <li>UK Department for Transport - Transport Statistics Great Britain 2023</li>
+                        <li>Bureau of Transportation Statistics (BTS) - US Transportation Safety Data)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: Thank You -->
+        <div class="slide intro-slide">
+            <div class="slide-header">
+                <h1 class="intro-title">سپاسگزارم</h1>
+                <p class="intro-subtitle">از توجه شما متشکرم</p>
+            </div>
+            <div class="slide-body">
+                <p style="font-size: 24px; margin-top: 50px;">آیا سوالی دارید؟</p>
+                <div style="margin-top: 50px;">
+                    <p>[نام شما]</p>
+                    <p>[اطلاعات تماس]</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
