@@ -1,127 +1,316 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa" dir="rtl">
 <head>
   <title>نقشه فریلنسرها و بانک‌های سامان در ایران</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
   <style>
-    #map { height: 100vh; }
-    #fileInput { 
-      position: absolute; 
-      top: 10px; 
-      left: 10px; 
-      z-index: 1000;
-      background: white;
-      padding: 5px;
-      border-radius: 5px;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
+    #map { 
+      height: 100vh; 
+      width: 100%;
+    }
+    
+    .upload-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      transition: all 0.3s ease;
+    }
+    
+    .upload-container:hover {
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .upload-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .upload-header i {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-left: 10px;
+    }
+    
+    .upload-header h3 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 16px;
+    }
+    
+    #fileInput {
+      display: none;
+    }
+    
+    .custom-file-upload {
+      border: 2px dashed #3498db;
+      border-radius: 8px;
+      display: inline-block;
+      padding: 30px 15px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: all 0.3s ease;
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .custom-file-upload:hover {
+      background-color: rgba(52, 152, 219, 0.1);
+      border-color: #2980b9;
+    }
+    
+    .custom-file-upload i {
+      font-size: 40px;
+      color: #3498db;
+      margin-bottom: 10px;
+      display: block;
+    }
+    
+    .custom-file-upload p {
+      margin: 0;
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+    
     .legend {
       position: absolute;
       bottom: 30px;
-      right: 10px;
+      right: 20px;
       z-index: 1000;
-      background: white;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      font-size: 14px;
     }
+    
+    .legend h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #2c3e50;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+    
     .legend-item {
       display: flex;
       align-items: center;
-      margin: 5px 0;
+      margin: 8px 0;
     }
+    
     .legend-color {
       width: 20px;
       height: 20px;
-      margin-right: 10px;
+      margin-left: 10px;
       display: inline-block;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+    }
+    
+    .leaflet-popup-content {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .popup-header {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+    
+    .popup-content {
+      font-size: 14px;
+      color: #34495e;
+    }
+    
+    .popup-content strong {
+      color: #2c3e50;
+    }
+    
+    .leaflet-control-geocoder {
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    .leaflet-control-geocoder-form input {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
   </style>
 </head>
 <body>
 
-<input type="file" id="fileInput" accept=".xlsx, .xls" />
+<div class="upload-container">
+  <div class="upload-header">
+    <i class="fas fa-map-marked-alt"></i>
+    <h3>نقشه فریلنسرها و بانک‌های سامان</h3>
+  </div>
+  <label for="fileInput" class="custom-file-upload">
+    <i class="fas fa-file-upload"></i>
+    <p>فایل اکسل خود را اینجا رها کنید یا کلیک کنید</p>
+    <small>فرمت مورد قبول: XLSX, XLS</small>
+  </label>
+  <input type="file" id="fileInput" accept=".xlsx, .xls" />
+</div>
+
 <div id="map"></div>
+
 <div class="legend">
   <h3>راهنما</h3>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #30a3ec;"></span>
-    <span>فریلنسرها</span>
+    <span class="legend-color" style="background-color: #2ecc71;"></span>
+    <span>تراکم کم فریلنسرها</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #ff7800;"></span>
+    <span class="legend-color" style="background-color: #f39c12;"></span>
+    <span>تراکم متوسط فریلنسرها</span>
+  </div>
+  <div class="legend-item">
+    <span class="legend-color" style="background-color: #e74c3c;"></span>
+    <span>تراکم زیاد فریلنسرها</span>
+  </div>
+  <div class="legend-item">
+    <span class="legend-color" style="background-color: #9b59b6;"></span>
     <span>بانک‌های سامان</span>
   </div>
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script>
   // تعریف نقشه با مرکزیت ایران
   var map = L.map('map').setView([32.4279, 53.6880], 5); 
 
   // بارگذاری لایه نقشه
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
   // موقعیت بانک‌های سامان در شهرهای مختلف ایران
   var samanBanks = [
-    { city: "تهران", lat: 35.6892, lng: 51.3890, name: "شعبه مرکزی" },
-    { city: "اصفهان", lat: 32.6539, lng: 51.6660, name: "شعبه اصفهان" },
-    { city: "مشهد", lat: 36.2605, lng: 59.6168, name: "شعبه مشهد" },
-    { city: "تبریز", lat: 38.0962, lng: 46.2738, name: "شعبه تبریز" },
-    { city: "شیراز", lat: 29.5926, lng: 52.5836, name: "شعبه شیراز" },
-    { city: "کرج", lat: 35.8400, lng: 50.9391, name: "شعبه کرج" },
-    { city: "قم", lat: 34.6399, lng: 50.8764, name: "شعبه قم" },
-    { city: "اهواز", lat: 31.3183, lng: 48.6706, name: "شعبه اهواز" },
-    { city: "کرمان", lat: 30.2839, lng: 57.0833, name: "شعبه کرمان" },
-    { city: "ارومیه", lat: 37.5522, lng: 45.0749, name: "شعبه ارومیه" }
+    { city: "تهران", lat: 35.6892, lng: 51.3890, name: "شعبه مرکزی", address: "خیابان ولیعصر، نرسیده به میدان ولیعصر" },
+    { city: "اصفهان", lat: 32.6539, lng: 51.6660, name: "شعبه اصفهان", address: "میدان امام حسین، ابتدای چهارباغ بالا" },
+    { city: "مشهد", lat: 36.2605, lng: 59.6168, name: "شعبه مشهد", address: "بلوار احمدآباد، نبش احمدآباد 10" },
+    { city: "تبریز", lat: 38.0962, lng: 46.2738, name: "شعبه تبریز", address: "خیابان امام خمینی، جنب بازار تبریز" },
+    { city: "شیراز", lat: 29.5926, lng: 52.5836, name: "شعبه شیراز", address: "بلوار کریمخان زند، نبش کوچه 10" },
+    { city: "کرج", lat: 35.8400, lng: 50.9391, name: "شعبه کرج", address: "میدان شهدا، جنب شهرداری کرج" },
+    { city: "قم", lat: 34.6399, lng: 50.8764, name: "شعبه قم", address: "بلوار امین، روبروی حرم حضرت معصومه" },
+    { city: "اهواز", lat: 31.3183, lng: 48.6706, name: "شعبه اهواز", address: "خیابان ساحلی، جنب پارک دولت" },
+    { city: "کرمان", lat: 30.2839, lng: 57.0833, name: "شعبه کرمان", address: "بلوار جمهوری، نبش خیابان شریعتی" },
+    { city: "ارومیه", lat: 37.5522, lng: 45.0749, name: "شعبه ارومیه", address: "خیابان امام، جنب بازار روز ارومیه" }
   ];
+
+  // ایجاد آیکون سفارشی برای بانک‌ها
+  var bankIcon = L.divIcon({
+    className: 'bank-icon',
+    html: '<div style="background-color: #9b59b6; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3);"><i class="fas fa-university" style="font-size: 14px;"></i></div>',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
 
   // افزودن نشانگر برای بانک‌های سامان
   samanBanks.forEach(function(bank) {
     L.marker([bank.lat, bank.lng], {
-      icon: L.divIcon({
-        className: 'bank-icon',
-        html: '🏦',
-        iconSize: [30, 30]
-      })
-    }).addTo(map).bindPopup(bank.city + '<br>' + bank.name + ' بانک سامان');
+      icon: bankIcon,
+      riseOnHover: true
+    }).addTo(map).bindPopup(`
+      <div class="popup-header">
+        <i class="fas fa-university"></i> ${bank.name} بانک سامان
+      </div>
+      <div class="popup-content">
+        <strong>شهر:</strong> ${bank.city}<br>
+        <strong>آدرس:</strong> ${bank.address}<br><br>
+        <i class="fas fa-phone" style="color: #3498db;"></i> 021-12345678
+      </div>
+    `);
   });
+
+  // تابع برای تعیین رنگ بر اساس تعداد فریلنسرها
+  function getColorByCount(count) {
+    if (count < 10) return '#2ecc71'; // سبز برای تراکم کم
+    if (count < 20) return '#f39c12'; // نارنجی برای تراکم متوسط
+    return '#e74c3c'; // قرمز برای تراکم زیاد
+  }
 
   // خواندن فایل اکسل
   document.getElementById('fileInput').addEventListener('change', function(e) {
     var file = e.target.files[0];
+    if (!file) return;
+    
     var reader = new FileReader();
     
     reader.onload = function(e) {
-      var data = new Uint8Array(e.target.result);
-      var workbook = XLSX.read(data, { type: 'array' });
-      
-      // فرض می‌کنیم اولین شیت حاوی داده‌هاست
-      var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      var jsonData = XLSX.utils.sheet_to_json(firstSheet);
-      
-      // پاک کردن مارکرهای قبلی فریلنسرها (اگر وجود داشتند)
-      map.eachLayer(function(layer) {
-        if (layer instanceof L.Circle) {
-          map.removeLayer(layer);
-        }
-      });
-      
-      // افزودن دایره برای هر شهر بر اساس داده‌های اکسل
-      jsonData.forEach(function(item) {
-        if (item.city && item.count && item.lat && item.lng) {
-          L.circle([item.lat, item.lng], {
-            color: 'blue',
-            fillColor: '#30a3ec',
-            fillOpacity: 0.5,
-            radius: item.count * 2000
-          }).addTo(map).bindPopup(item.city + '<br>تعداد فریلنسرها: ' + item.count);
-        }
-      });
+      try {
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, { type: 'array' });
+        
+        // فرض می‌کنیم اولین شیت حاوی داده‌هاست
+        var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        var jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        
+        // پاک کردن مارکرهای قبلی فریلنسرها (اگر وجود داشتند)
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.Circle) {
+            map.removeLayer(layer);
+          }
+        });
+        
+        // پیدا کردن حداکثر تعداد برای نرمالایز کردن اندازه دایره‌ها
+        var maxCount = 0;
+        jsonData.forEach(function(item) {
+          if (item.count && item.count > maxCount) maxCount = item.count;
+        });
+        
+        // افزودن دایره برای هر شهر بر اساس داده‌های اکسل
+        jsonData.forEach(function(item) {
+          var city = item.city || item.City || item.شهر;
+          var count = item.count || item.Count || item.تعداد;
+          var lat = item.lat || item.Lat || item.عرض جغرافیایی;
+          var lng = item.lng || item.Lng || item.طول جغرافیایی;
+          
+          if (city && count && lat && lng) {
+            // محاسبه اندازه دایره به صورت نرمالایز شده
+            var normalizedRadius = (count / maxCount) * 10000 + 2000;
+            
+            L.circle([lat, lng], {
+              color: '#fff',
+              fillColor: getColorByCount(count),
+              fillOpacity: 0.7,
+              weight: 1,
+              radius: normalizedRadius
+            }).addTo(map).bindPopup(`
+              <div class="popup-header">
+                <i class="fas fa-users"></i> ${city}
+              </div>
+              <div class="popup-content">
+                <strong>تعداد فریلنسرها:</strong> ${count}<br>
+                <strong>موقعیت:</strong> ${lat.toFixed(4)}, ${lng.toFixed(4)}
+              </div>
+            `);
+          }
+        });
+        
+        // نمایش پیام موفقیت
+        alert(`داده‌های ${jsonData.length} شهر با موفقیت بارگذاری شدند.`);
+      } catch (error) {
+        console.error('Error processing file:', error);
+        alert('خطا در پردازش فایل. لطفاً از صحت فرمت فایل اطمینان حاصل کنید.');
+      }
     };
     
     reader.readAsArrayBuffer(file);
@@ -130,12 +319,59 @@
   // افزودن کنترل جستجو
   L.Control.geocoder({
     defaultMarkGeocode: false,
-    position: 'topleft'
+    position: 'topleft',
+    placeholder: 'جستجوی شهر یا مکان...',
+    errorMessage: 'مکانی یافت نشد.',
+    showResultIcons: true,
+    collapseAfterResult: false,
+    expand: 'click'
   })
   .on('markgeocode', function(e) {
     map.fitBounds(e.geocode.bbox);
+    L.marker(e.geocode.center).addTo(map)
+      .bindPopup(e.geocode.name)
+      .openPopup();
   })
   .addTo(map);
+
+  // افزودن کنترل زوم
+  L.control.zoom({
+    position: 'topright'
+  }).addTo(map);
+
+  // فعال کردن کشیدن و رها کردن فایل
+  var uploadContainer = document.querySelector('.upload-container');
+  var fileInput = document.getElementById('fileInput');
+  
+  uploadContainer.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadContainer.style.boxShadow = '0 0 25px rgba(52, 152, 219, 0.5)';
+    uploadContainer.querySelector('.custom-file-upload').style.borderColor = '#2980b9';
+    uploadContainer.querySelector('.custom-file-upload').style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
+  });
+  
+  uploadContainer.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadContainer.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.2)';
+    uploadContainer.querySelector('.custom-file-upload').style.borderColor = '#3498db';
+    uploadContainer.querySelector('.custom-file-upload').style.backgroundColor = 'rgba(52, 152, 219, 0.05)';
+  });
+  
+  uploadContainer.addEventListener('drop', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadContainer.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.2)';
+    uploadContainer.querySelector('.custom-file-upload').style.borderColor = '#3498db';
+    uploadContainer.querySelector('.custom-file-upload').style.backgroundColor = 'rgba(52, 152, 219, 0.05)';
+    
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      var event = new Event('change');
+      fileInput.dispatchEvent(event);
+    }
+  });
 </script>
 
 </body>
