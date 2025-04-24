@@ -1,0 +1,43 @@
+body {
+  font-family: sans-serif;
+  background: linear-gradient(to bottom right, #1e1e2f, #3a3a5d);
+  color: white;
+  padding: 2rem;
+  margin: 0;
+}
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+h1 {
+  font-size: 2.5rem;
+  color: #c0bfff;
+}
+p {
+  color: #ccccff;
+}
+.card {
+  background: white;
+  color: #222;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.card h3 {
+  color: #4b3eff;
+}
+.card .authors {
+  font-weight: bold;
+}
+.card .method {
+  font-style: italic;
+  color: #5555aa;
+}
+.summary {
+  background: #fff;
+  color: #111;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 1rem;
+}
