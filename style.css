@@ -1,43 +1,81 @@
 body {
-  font-family: sans-serif;
-  background: linear-gradient(to bottom right, #1e1e2f, #3a3a5d);
-  color: white;
+  font-family: 'Vazirmatn', sans-serif;
+  background: linear-gradient(135deg, #1e1e2f, #3a3a5d);
+  color: #f0f0ff;
   padding: 2rem;
   margin: 0;
+  direction: rtl;
 }
+
 header {
   text-align: center;
   margin-bottom: 3rem;
 }
+
 h1 {
   font-size: 2.5rem;
   color: #c0bfff;
+  margin-bottom: 0.5rem;
 }
+
 p {
   color: #ccccff;
+  font-size: 1.1rem;
 }
+
 .card {
-  background: white;
+  background: #ffffff;
   color: #222;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
 .card h3 {
   color: #4b3eff;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
 }
+
 .card .authors {
   font-weight: bold;
+  color: #444;
+  margin-bottom: 0.25rem;
 }
+
 .card .method {
   font-style: italic;
-  color: #5555aa;
+  color: #6666aa;
+  margin-bottom: 1rem;
 }
+
 .summary {
   background: #fff;
   color: #111;
   padding: 2rem;
   margin-top: 3rem;
   border-radius: 1rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.summary h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.summary p {
+  color: #333;
+  line-height: 1.9;
+  font-size: 1.1rem;
 }
