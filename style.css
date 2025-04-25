@@ -1,10 +1,16 @@
 body {
   font-family: 'Vazirmatn', sans-serif;
-  background: linear-gradient(135deg, #1e1e2f, #3a3a5d);
-  color: #f0f0ff;
-  padding: 2rem;
+  background: linear-gradient(to bottom right, #1f1f2e, #3d3d5c);
+  color: #f8f8ff;
   margin: 0;
+  padding: 0;
   direction: rtl;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
 }
 
 header {
@@ -12,70 +18,58 @@ header {
   margin-bottom: 3rem;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #c0bfff;
-  margin-bottom: 0.5rem;
+header h1 {
+  font-size: 2.4rem;
+  color: #bdbdff;
 }
 
-p {
-  color: #ccccff;
+header p {
+  color: #a0a0ff;
   font-size: 1.1rem;
 }
 
 .card {
-  background: #ffffff;
-  color: #222;
-  border-radius: 1.5rem;
+  background: white;
+  color: #111;
   padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-4px);
 }
 
-.card h3 {
-  color: #4b3eff;
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
+.card h2 {
+  color: #4a42ff;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .card .authors {
   font-weight: bold;
-  color: #444;
-  margin-bottom: 0.25rem;
-}
-
-.card .method {
-  font-style: italic;
-  color: #6666aa;
-  margin-bottom: 1rem;
+  color: #555;
 }
 
 .summary {
   background: #fff;
-  color: #111;
+  color: #222;
   padding: 2rem;
-  margin-top: 3rem;
   border-radius: 1rem;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .summary h2 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #333;
   margin-bottom: 1rem;
 }
 
-.summary p {
-  color: #333;
-  line-height: 1.9;
-  font-size: 1.1rem;
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  color: #aaa;
+  font-size: 0.9rem;
 }
